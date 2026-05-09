@@ -6,49 +6,47 @@ import { motion, useInView } from 'framer-motion'
 interface Poster {
   id: string
   title: string
-  location: string
-  category: string
   imageUrl: string
+  link?: string
 }
 
 // 32 posters distributed across 4 columns (8 per column)
 const ALL_POSTERS: Poster[] = [
-  // ── Column 1 — Wildlife ──
-  { id: '1',  title: 'Ghost of the Mountains', location: 'Ladakh',              category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1551244072-5d12893278bc?w=600&q=80' },
-  { id: '2',  title: 'Shadow & Stripes',        location: 'Ranthambore',         category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=600&q=80' },
-  { id: '3',  title: 'River Gods',              location: 'Kaziranga, Assam',    category: 'DOCUMENTARY', imageUrl: 'https://images.unsplash.com/photo-1484406566174-9da000fda645?w=600&q=80' },
-  { id: '4',  title: 'The Leopard Trail',       location: 'Sanjay Gandhi Park',  category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1505232530843-7e94d7faac73?w=600&q=80' },
-  { id: '5',  title: 'Wings Over the Deccan',   location: 'Karnataka',           category: 'NATURE',      imageUrl: 'https://images.unsplash.com/photo-1444464666168-49d633b86797?w=600&q=80' },
-  { id: '6',  title: 'The Elephant Roads',      location: 'Nagarhole',           category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=600&q=80' },
-  { id: '7',  title: 'Night Hunters',           location: 'Jim Corbett NP',      category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&q=80' },
-  { id: '8',  title: 'The Great Migration',     location: 'Assam, India',        category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=600&q=80' },
-  // ── Column 2 — Landscape ──
-  { id: '9',  title: 'Himalayan Call',          location: 'Spiti Valley, HP',    category: 'JOURNEY',     imageUrl: 'https://images.unsplash.com/photo-1580651315530-69c8e0026377?w=600&q=80' },
-  { id: '10', title: 'Desert Kingdom',          location: 'Thar, Rajasthan',     category: 'LANDSCAPE',   imageUrl: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80' },
-  { id: '11', title: 'Sacred Forests',          location: 'Western Ghats',       category: 'CULTURAL',    imageUrl: 'https://images.unsplash.com/photo-1476611338391-6f395a0dd82e?w=600&q=80' },
-  { id: '12', title: 'Desert Caravan',          location: 'Jaisalmer',           category: 'JOURNEY',     imageUrl: 'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80' },
-  { id: '13', title: 'Mountain Solitude',       location: 'Leh, Ladakh',         category: 'LANDSCAPE',   imageUrl: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&q=80' },
-  { id: '14', title: 'The Forest Path',         location: 'Jim Corbett',         category: 'JOURNEY',     imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80' },
-  { id: '15', title: 'Mist & Mountains',        location: 'Meghalaya',           category: 'LANDSCAPE',   imageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80' },
-  { id: '16', title: 'Golden Meadows',          location: 'Valley of Flowers',   category: 'LANDSCAPE',   imageUrl: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=600&q=80' },
-  // ── Column 3 — Nature & Culture ──
-  { id: '17', title: 'Mangrove Secrets',        location: 'Sundarbans, WB',      category: 'NATURE',      imageUrl: 'https://images.unsplash.com/photo-1567507832930-c580aa702b47?w=600&q=80' },
-  { id: '18', title: 'Living Traditions',       location: 'Varanasi, UP',        category: 'CULTURAL',    imageUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80' },
-  { id: '19', title: 'Sacred Waters',           location: 'Kerala Backwaters',   category: 'CULTURAL',    imageUrl: 'https://images.unsplash.com/photo-1505144808419-1957a94ca61e?w=600&q=80' },
-  { id: '20', title: 'The Wild Shore',          location: 'Andaman Islands',     category: 'NATURE',      imageUrl: 'https://images.unsplash.com/photo-1494548162494-384bba4ab999?w=600&q=80' },
-  { id: '21', title: 'Steppe Hunters',          location: 'Ladakh Plateau',      category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=600&q=80' },
-  { id: '22', title: 'Starlit Peaks',           location: 'Zanskar Valley',      category: 'LANDSCAPE',   imageUrl: 'https://images.unsplash.com/photo-1517148815978-5672a31c6a95?w=600&q=80' },
-  { id: '23', title: 'Misty Jungle',            location: 'Coorg, Karnataka',    category: 'NATURE',      imageUrl: 'https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?w=600&q=80' },
-  { id: '24', title: 'Eastern Shores',          location: 'Odisha Coast',        category: 'NATURE',      imageUrl: 'https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?w=600&q=80' },
-  // ── Column 4 — Journey & Culture ──
-  { id: '25', title: 'Ancient Passages',        location: 'Hampi, Karnataka',    category: 'CULTURAL',    imageUrl: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&q=80' },
-  { id: '26', title: 'River People',            location: 'Ganges, Varanasi',    category: 'CULTURAL',    imageUrl: 'https://images.unsplash.com/photo-1504173010664-32509107de4d?w=600&q=80' },
-  { id: '27', title: 'Into the Wild',           location: 'Pench NP, MP',        category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=600&q=80' },
-  { id: '28', title: 'Golden Hour Wilds',       location: 'Gir NP, Gujarat',     category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=600&q=80' },
-  { id: '29', title: 'Silent Sentinels',        location: 'Kaziranga, Assam',    category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=600&q=80' },
-  { id: '30', title: 'Plains of Life',          location: 'Kanha, MP',           category: 'WILDLIFE',    imageUrl: 'https://images.unsplash.com/photo-1530508777238-14544088b92a?w=600&q=80' },
-  { id: '31', title: 'Rooftop of India',        location: 'Nanda Devi, UK',      category: 'LANDSCAPE',   imageUrl: 'https://images.unsplash.com/photo-1598824858254-68de87b37b2e?w=600&q=80' },
-  { id: '32', title: 'The Bengal Shore',        location: 'West Bengal',         category: 'NATURE',      imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80' },
+  { id: '1', title: 'Andhra Pradesh', imageUrl: 'https://images.unsplash.com/photo-1551244072-5d12893278bc?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Andhra%20Pradesh' },
+{ id: '2', title: 'Arunachal Pradesh', imageUrl: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Arunachal%20Pradesh' },
+{ id: '3', title: 'Assam', imageUrl: 'https://images.unsplash.com/photo-1484406566174-9da000fda645?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Assam' },
+{ id: '4', title: 'Bihar', imageUrl: 'https://images.unsplash.com/photo-1505232530843-7e94d7faac73?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Bihar' },
+{ id: '5', title: 'Bhutan', imageUrl: 'https://images.unsplash.com/photo-1444464666168-49d633b86797?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Bhutan' },
+{ id: '6', title: 'Chhattisgarh', imageUrl: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Chhattisgarh' },
+{ id: '7', title: 'Goa', imageUrl: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Goa' },
+{ id: '8', title: 'Gujarat', imageUrl: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Gujarat' },
+
+{ id: '9', title: 'Haryana', imageUrl: 'https://images.unsplash.com/photo-1580651315530-69c8e0026377?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Haryana' },
+{ id: '10', title: 'Himachal Pradesh', imageUrl: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Himachal%20Pradesh' },
+{ id: '11', title: 'Jharkhand', imageUrl: 'https://images.unsplash.com/photo-1476611338391-6f395a0dd82e?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Jharkhand' },
+{ id: '12', title: 'Karnataka', imageUrl: 'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Karnataka' },
+{ id: '13', title: 'Kerala', imageUrl: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Kerala' },
+{ id: '14', title: 'Ladakh', imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Ladakh' },
+{ id: '15', title: 'Madhya Pradesh', imageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Madhya%20Pradesh' },
+{ id: '16', title: 'Maharashtra', imageUrl: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Maharashtra' },
+
+{ id: '17', title: 'Manipur', imageUrl: 'https://images.unsplash.com/photo-1567507832930-c580aa702b47?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Manipur' },
+{ id: '18', title: 'Meghalaya', imageUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Meghalaya' },
+{ id: '19', title: 'Mizoram', imageUrl: 'https://images.unsplash.com/photo-1505144808419-1957a94ca61e?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Mizoram' },
+{ id: '20', title: 'Nagaland', imageUrl: 'https://images.unsplash.com/photo-1494548162494-384bba4ab999?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Nagaland' },
+{ id: '21', title: 'NCT of Delhi', imageUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Delhi' },
+{ id: '22', title: 'Nepal', imageUrl: 'https://images.unsplash.com/photo-1517148815978-5672a31c6a95?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Nepal' },
+{ id: '23', title: 'Odisha', imageUrl: 'https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Odisha' },
+{ id: '24', title: 'Punjab', imageUrl: 'https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Punjab' },
+
+{ id: '25', title: 'Rajasthan', imageUrl: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Rajasthan' },
+{ id: '26', title: 'Sikkim', imageUrl: 'https://images.unsplash.com/photo-1504173010664-32509107de4d?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Sikkim' },
+{ id: '27', title: 'Tamil Nadu', imageUrl: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Tamil%20Nadu' },
+{ id: '28', title: 'Telangana', imageUrl: 'https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Telangana' },
+{ id: '29', title: 'Tripura', imageUrl: 'https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Tripura' },
+{ id: '30', title: 'Uttar Pradesh', imageUrl: 'https://images.unsplash.com/photo-1530508777238-14544088b92a?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Uttar%20Pradesh' },
+{ id: '31', title: 'Uttarakhand', imageUrl: 'https://images.unsplash.com/photo-1598824858254-68de87b37b2e?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=Uttarakhand' },
+{ id: '32', title: 'West Bengal', imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', link: 'https://www.youtube.com/@WildFilmsIndia/search?query=West%20Bengal' },
 ]
 
 // Column config: posters slice, direction, speed, stagger offset
@@ -60,17 +58,24 @@ const COLUMNS = [
 ] as const
 
 function PosterCard({ poster }: { poster: Poster }) {
-  return (
+  const inner = (
     <div className="wfp-card">
       <div className="wfp-img" style={{ backgroundImage: `url(${poster.imageUrl})` }} />
       <div className="wfp-overlay" />
       <div className="wfp-info">
-        <span className="wfp-cat">{poster.category}</span>
         <p className="wfp-title">{poster.title}</p>
-        <p className="wfp-loc">{poster.location}</p>
       </div>
     </div>
   )
+  if (poster.link) {
+    return (
+      <a href={poster.link} target="_blank" rel="noopener noreferrer"
+        style={{ textDecoration: 'none', outline: 'none', display: 'block' }}>
+        {inner}
+      </a>
+    )
+  }
+  return inner
 }
 
 export default function FilmsSection() {
@@ -78,7 +83,7 @@ export default function FilmsSection() {
   const isInView = useInView(headerRef, { once: true, margin: '-100px' })
 
   return (
-    <section id="films" className="wf-films">
+    <section id="journey-across-india" className="wf-films">
       <style>{`
         /* ─────────────────────────────────────────────────────
            THE FILMS — Full-width immersive 4-column poster wall
@@ -87,19 +92,19 @@ export default function FilmsSection() {
 
         .wf-films {
           position: relative;
-          background: #1a110d;
+          background: #030303;
           height: min(940px, 92vh);
           min-height: 580px;
           overflow: hidden;
         }
 
-        /* Gradient bridge from JourneySection (#0d0b09) */
+        /* Gradient bridge from adjacent section (#030303) */
         .wf-films::before {
           content: '';
           position: absolute;
           top: 0; left: 0; right: 0;
           height: 60px;
-          background: linear-gradient(to bottom, #0d0b09, transparent);
+          background: linear-gradient(to bottom, #030303, transparent);
           z-index: 2;
           pointer-events: none;
         }
@@ -141,10 +146,6 @@ export default function FilmsSection() {
           to   { transform: translateY(0);    }
         }
 
-        /* Hover pauses only the hovered column */
-        .wf-col:hover .wf-track {
-          animation-play-state: paused;
-        }
 
         /* ── Individual poster card ── */
         .wfp-card {
@@ -215,12 +216,14 @@ export default function FilmsSection() {
 
         .wfp-title {
           font-family: var(--font-display, 'Cormorant Garamond', serif);
-          font-size: 0.88rem;
+          font-size: 1.45rem;
           font-weight: 400;
-          color: #F0EDE8;
+          color: #ffffff;
+          opacity: 1;
           line-height: 1.2;
           margin: 0 0 3px;
           letter-spacing: 0.01em;
+          text-shadow: 0 2px 8px rgba(0,0,0,0.6);
         }
 
         .wfp-loc {
@@ -239,9 +242,9 @@ export default function FilmsSection() {
           height: 320px;
           background: linear-gradient(
             to bottom,
-            rgba(26,17,13,0.98) 0%,
-            rgba(26,17,13,0.98) 55%,
-            rgba(26,17,13,0.45) 80%,
+            rgba(3,3,3,0.98) 0%,
+            rgba(3,3,3,0.98) 55%,
+            rgba(3,3,3,0.45) 80%,
             transparent 100%
           );
           z-index: 5;
@@ -254,8 +257,8 @@ export default function FilmsSection() {
           height: 32%;
           background: linear-gradient(
             to top,
-            rgba(26,17,13,1) 0%,
-            rgba(26,17,13,0.55) 50%,
+            rgba(3,3,3,1) 0%,
+            rgba(3,3,3,0.55) 50%,
             transparent 100%
           );
           z-index: 5;
@@ -297,7 +300,7 @@ export default function FilmsSection() {
 
         .wf-header-title {
           font-family: var(--font-display, 'Cormorant Garamond', serif);
-          font-size: clamp(3rem, 7vw, 6.5rem);
+          font-size: clamp(2.5rem, 5vw, 4.5rem);
           font-weight: 300;
           color: #F0EDE8;
           letter-spacing: 0.16em;
@@ -366,14 +369,14 @@ export default function FilmsSection() {
           padding: 13px 26px;
           border-radius: 1px;
           backdrop-filter: blur(10px);
-          background: rgba(26,17,13,0.35);
+          background: rgba(3,3,3,0.35);
           transition: color 0.3s, border-color 0.3s, background 0.3s;
         }
 
         .wf-cta-link:hover {
           color: #A67C52;
           border-color: rgba(166,124,82,0.5);
-          background: rgba(26,17,13,0.65);
+          background: rgba(3,3,3,0.65);
         }
       `}</style>
 
@@ -403,23 +406,14 @@ export default function FilmsSection() {
 
       {/* ── Section header overlay ── */}
       <div className="wf-header" ref={headerRef}>
-        <motion.span
-          className="wf-header-overline"
-          initial={{ opacity: 0, y: 8 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          Wilderness Films India · Est. 1988
-        </motion.span>
-
         <motion.h2
           className="wf-header-title"
           initial={{ opacity: 0, y: 28 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.1, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          The{' '}
-          <span className="wf-header-title-gold">Films</span>
+          Journey Across{' '}
+          <span className="wf-header-title-gold">India</span>
         </motion.h2>
 
         <div className="wf-header-line-row">
@@ -428,20 +422,6 @@ export default function FilmsSection() {
 
       </div>
 
-      {/* ── View All CTA overlay ── */}
-      <motion.div
-        className="wf-cta"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.9, duration: 0.8 }}
-      >
-        <a href="#" className="wf-cta-link">
-          View All Films
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M2 6 H10 M7 3 L10 6 L7 9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-          </svg>
-        </a>
-      </motion.div>
     </section>
   )
 }

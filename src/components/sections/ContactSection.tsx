@@ -105,7 +105,7 @@ function FloatingTextarea({
   const raised = focused || value.length > 0
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column' }}>
       <motion.label
         htmlFor={name}
         animate={{
@@ -153,107 +153,16 @@ function FloatingTextarea({
           fontFamily: '"Cormorant Garamond", Georgia, serif',
           outline: 'none',
           borderRadius: '2px',
-          resize: 'vertical',
+          resize: 'none',
           minHeight: '140px',
-          maxHeight: '300px',
+          maxHeight: 'none',
+          flex: 1,
           transition: 'border-color 0.25s, box-shadow 0.25s, background 0.25s',
           boxShadow: focused ? '0 0 20px rgba(201,168,76,0.07), inset 0 1px 0 rgba(201,168,76,0.05)' : 'none',
           caretColor: '#C9A84C',
           lineHeight: 1.65,
         }}
       />
-    </div>
-  )
-}
-
-// ── Contact info row ─────────────────────────────────────────
-const INFO_ROWS = [
-  {
-    label: 'Address',
-    value: '1 Factory Road, Ring Road South,\nNew Delhi 110029, India',
-  },
-  { label: 'Phone',   value: '+91 9810019704', href: 'tel:+919810019704' },
-  { label: 'Email',   value: 'rupindang@gmail.com', href: 'mailto:rupindang@gmail.com' },
-  { label: 'Web',     value: 'wildfilmsindia.com', href: 'https://www.wildfilmsindia.com' },
-  { label: 'Hours',   value: 'Available 24 × 7' },
-]
-
-function InfoBlock({ inView }: { inView: boolean }) {
-  return (
-    <div style={{ marginTop: '3rem' }}>
-      {/* Gold rule */}
-      <div style={{
-        height: '1px',
-        background: 'linear-gradient(90deg, rgba(201,168,76,0.25), transparent)',
-        marginBottom: '1.75rem',
-      }} />
-
-      <p style={{
-        fontFamily: '"Space Mono", monospace',
-        fontSize: '0.52rem',
-        letterSpacing: '0.25em',
-        textTransform: 'uppercase',
-        color: 'rgba(201,168,76,0.40)',
-        marginBottom: '1.25rem',
-      }}>
-        Wilderness Films India Ltd.
-      </p>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-        {INFO_ROWS.map((row, i) => (
-          <motion.div
-            key={row.label}
-            initial={{ opacity: 0, x: -12 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: 0.55 + i * 0.07 }}
-            style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}
-          >
-            <span style={{
-              fontFamily: '"Space Mono", monospace',
-              fontSize: '0.48rem',
-              letterSpacing: '0.16em',
-              textTransform: 'uppercase',
-              color: 'rgba(201,168,76,0.35)',
-              width: '42px',
-              flexShrink: 0,
-              paddingTop: '2px',
-            }}>
-              {row.label}
-            </span>
-            <div style={{ width: '1px', background: 'rgba(201,168,76,0.15)', flexShrink: 0, alignSelf: 'stretch' }} />
-            {row.href ? (
-              <a
-                href={row.href}
-                target={row.href.startsWith('http') ? '_blank' : undefined}
-                rel="noreferrer"
-                style={{
-                  fontFamily: '"Cormorant Garamond", Georgia, serif',
-                  fontSize: '0.8rem',
-                  color: 'rgba(240,237,232,0.50)',
-                  textDecoration: 'none',
-                  lineHeight: 1.55,
-                  whiteSpace: 'pre-line',
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#C9A84C')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(240,237,232,0.50)')}
-              >
-                {row.value}
-              </a>
-            ) : (
-              <p style={{
-                fontFamily: '"Cormorant Garamond", Georgia, serif',
-                fontSize: '0.8rem',
-                color: 'rgba(240,237,232,0.50)',
-                lineHeight: 1.55,
-                whiteSpace: 'pre-line',
-              }}>
-                {row.value}
-              </p>
-            )}
-          </motion.div>
-        ))}
-      </div>
     </div>
   )
 }
@@ -416,6 +325,10 @@ function ContactForm({ inView }: { inView: boolean }) {
         padding: '2.5rem',
         position: 'relative',
         overflow: 'hidden',
+        height: '100%',
+        minHeight: '560px',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       {/* Corner accents */}
@@ -452,7 +365,7 @@ function ContactForm({ inView }: { inView: boolean }) {
         Send A Message
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           {/* Honeypot — visually hidden, never filled by humans.
               Bots auto-complete it; the API rejects any submission where it has a value. */}
           <input
@@ -465,7 +378,7 @@ function ContactForm({ inView }: { inView: boolean }) {
             aria-hidden="true"
             style={{ position: 'absolute', left: '-9999px', width: 0, height: 0, opacity: 0 }}
           />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem', flex: 1 }}>
           {/* Row: name + email */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
                className="flex-col sm:grid">
@@ -499,6 +412,7 @@ function ContactForm({ inView }: { inView: boolean }) {
             initial={{ opacity: 0, y: 14 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.55, delay: 0.54 }}
+            style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
           >
             <FloatingTextarea label="Your Message" name="message" value={fields.message} onChange={set('message')} required />
           </motion.div>
@@ -643,7 +557,7 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative overflow-hidden py-28 md:py-36 px-6 md:px-12 lg:px-24"
+      className="relative overflow-hidden pt-28 md:pt-36 pb-12 md:pb-16 px-6 md:px-12 lg:px-24"
       style={{ background: 'linear-gradient(180deg, #030303 0%, #050502 55%, #030303 100%)' }}
     >
       <GrainOverlay />
@@ -672,7 +586,7 @@ export default function ContactSection() {
           Contact — Wilderness Films India
         </motion.p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-stretch">
 
           {/* ── LEFT ─────────────────────────────────────────── */}
           <div>
@@ -691,7 +605,7 @@ export default function ContactSection() {
                   letterSpacing: '0.01em',
                 }}
               >
-                Let's Tell Wild
+                Let's Share
               </motion.h2>
             </div>
             <div style={{ overflow: 'hidden', marginBottom: '1.6rem' }}>
@@ -709,7 +623,7 @@ export default function ContactSection() {
                   letterSpacing: '0.01em',
                 }}
               >
-                Stories Together
+                India's Madness
               </motion.h2>
             </div>
 
@@ -732,54 +646,18 @@ export default function ContactSection() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.38 }}
               style={{
-                fontSize: '0.95rem',
+                fontSize: 'calc(0.95rem + 1px)',
                 color: 'rgba(240,237,232,0.40)',
                 lineHeight: 1.9,
                 maxWidth: '420px',
                 fontWeight: 300,
               }}
             >
-              From remote forests to untold journeys across South Asia, Wilderness Films India captures stories that matter. Whether you're a broadcaster, a streaming platform, or a conservation partner — let's create something extraordinary together.
+              Make us part of your production plans in India. We deliver the widest range of production, gear, location, support services and stock footage. We can open doors that no one else can. And yes, while some of us have a weakness for wildlife, wilderness and the outdoors, we do produce programming on just about every subject under the sun!
+              <br /><br />
+              We invite content creators to reach out for our commercial production partnerships.
             </motion.p>
 
-            {/* Archive stats */}
-            <motion.div
-              className="flex gap-10 mt-8"
-              initial={{ opacity: 0, y: 14 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.46 }}
-            >
-              {[
-                { num: '50K+',  label: 'Hours of Footage' },
-                { num: '750K+', label: 'Still Images'     },
-                { num: '25+',   label: 'Years of Stories' },
-              ].map(s => (
-                <div key={s.label}>
-                  <p style={{
-                    fontFamily: '"Cormorant Garamond", Georgia, serif',
-                    fontSize: '1.85rem',
-                    fontWeight: 400,
-                    color: '#C9A84C',
-                    lineHeight: 1,
-                    marginBottom: '0.25rem',
-                  }}>
-                    {s.num}
-                  </p>
-                  <p style={{
-                    fontFamily: '"Space Mono", monospace',
-                    fontSize: '0.48rem',
-                    letterSpacing: '0.16em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(240,237,232,0.25)',
-                  }}>
-                    {s.label}
-                  </p>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Contact info block */}
-            <InfoBlock inView={inView} />
           </div>
 
           {/* ── RIGHT: Form ───────────────────────────────────── */}

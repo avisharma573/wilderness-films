@@ -417,7 +417,7 @@ export default function JourneySection() {
 
   return (
     <section
-      id="journey"
+      id="recent-highlights"
       ref={sectionRef}
       className="relative overflow-hidden"
       style={{
@@ -472,15 +472,6 @@ export default function JourneySection() {
 
         {/* ── Section header ── */}
         <div ref={titleRef} style={{ textAlign: 'center', marginBottom: '5rem' }}>
-          <motion.p
-            className="text-overline mb-4"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.6 }}
-          >
-            The Annual Expedition
-          </motion.p>
-
           <motion.h2
             className="font-display"
             initial={{ opacity: 0, y: 30 }}
@@ -494,26 +485,9 @@ export default function JourneySection() {
               marginBottom: '1rem',
             }}
           >
-            Journey Across{' '}
-            <span style={{ color: 'var(--color-gold)', fontStyle: 'italic' }}>India</span>
+            Recent{' '}
+            <span style={{ color: 'var(--color-gold)', fontStyle: 'italic' }}>Highlights</span>
           </motion.h2>
-
-          <motion.p
-            className="font-body"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            style={{
-              fontSize: '0.95rem',
-              color: 'rgba(240,237,232,0.4)',
-              maxWidth: '420px',
-              margin: '0 auto',
-              lineHeight: 1.75,
-              fontWeight: 300,
-            }}
-          >
-            Six sanctuaries. Six stories. One unbroken expedition through the heart of the wild.
-          </motion.p>
 
           {/* Gold divider */}
           <motion.div
@@ -576,61 +550,6 @@ export default function JourneySection() {
           ))}
         </div>
 
-        {/* ── End mark ── */}
-        <motion.div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 16,
-            paddingLeft: 88,
-          }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <div
-            style={{
-              width: 1,
-              height: 40,
-              background: 'linear-gradient(to bottom, rgba(201,168,76,0.4), transparent)',
-            }}
-          />
-          <div
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              border: '1px solid rgba(201,168,76,0.5)',
-              background: 'rgba(201,168,76,0.2)',
-            }}
-          />
-          <div style={{ textAlign: 'center', marginTop: 8 }}>
-            <p
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.58rem',
-                letterSpacing: '0.22em',
-                color: 'rgba(201,168,76,0.35)',
-                textTransform: 'uppercase',
-              }}
-            >
-              The Circle Complete
-            </p>
-            <p
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.52rem',
-                letterSpacing: '0.15em',
-                color: 'rgba(107,174,74,0.3)',
-                marginTop: 4,
-              }}
-            >
-              365 Days · 6 States · ∞ Stories
-            </p>
-          </div>
-        </motion.div>
       </div>
     </section>
   )

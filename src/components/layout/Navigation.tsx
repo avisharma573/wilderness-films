@@ -2,19 +2,22 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useState, useCallback } from 'react'
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { LogoCompact } from '@/components/ui/Logo'
 
-const NAV_LINKS = [
-  { label: 'Films',    href: '#films'    },
-  { label: 'Wildlife', href: '#wildlife' },
-  { label: 'Journey',  href: '#journey'  },
-  { label: 'Contact',  href: '#contact'  },
+const NAV_LINKS: { label: string; href: string }[] = [
+  { label: 'Films',      href: '#best-of-india'        },
+  { label: 'India',      href: '#journey-across-india' },
+  { label: 'Highlights', href: '#recent-highlights'    },
+  { label: 'About Us',   href: '/about'                },
+  { label: 'Offerings',  href: '/offerings'            },
+  { label: 'Contact Us', href: '#contact'              },
 ]
 
-const NAV_HEIGHT = 88 // px — fixed navbar height to offset scroll target
+const NAV_HEIGHT = 88
 
-function smoothScrollTo(href: string) {
-  const id = href.replace('#', '')
+function smoothScrollTo(id: string) {
   const el = document.getElementById(id)
   if (!el) return
   const top = el.getBoundingClientRect().top + window.scrollY - NAV_HEIGHT
@@ -23,16 +26,20 @@ function smoothScrollTo(href: string) {
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const isHome = pathname === '/'
   const { scrollY } = useScroll()
-  const navOpacity  = useTransform(scrollY, [0, 100], [0, 1])
+  const navOpacity = useTransform(scrollY, [0, 100], [0, 1])
 
-  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith('#')) {
+  const handleAnchorClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith('#')) return
+    if (isHome) {
       e.preventDefault()
-      smoothScrollTo(href)
+      smoothScrollTo(href.replace('#', ''))
       setMenuOpen(false)
     }
-  }, [])
+    // On other pages: browser navigates to /#anchor naturally via href
+  }, [isHome])
 
   return (
     <motion.nav
@@ -42,33 +49,36 @@ export default function Navigation() {
       transition={{ delay: 0.2, duration: 0.8 }}
     >
       {/* Blur backdrop — appears on scroll */}
-      <motion.div
-        className="absolute inset-0 nav-blur"
-        style={{ opacity: navOpacity }}
-      />
+      <motion.div className="absolute inset-0 nav-blur" style={{ opacity: navOpacity }} />
 
       <div className="relative max-w-7xl mx-auto flex items-center justify-between h-20">
         {/* Logo */}
-        <a href="/" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
+        <Link href="/" style={{ textDecoration: 'none' }}>
           <LogoCompact size={20} />
-        </a>
+        </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden md:flex items-center gap-7">
           {NAV_LINKS.map((link) => (
-            <NavLink key={link.label} link={link} onClick={handleNavClick} />
+            <NavLink
+              key={link.label}
+              link={link}
+              isHome={isHome}
+              onAnchorClick={handleAnchorClick}
+            />
           ))}
         </div>
 
         {/* CTA */}
         <div className="hidden md:flex items-center gap-4">
           <a
-            href="#films"
+            href="https://www.youtube.com/@WildFilmsIndia"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-primary text-xs py-3 px-6"
             style={{ fontSize: '0.7rem' }}
-            onClick={(e) => handleNavClick(e, '#films')}
           >
-            Watch Films
+            Enter The Archive
           </a>
         </div>
 
@@ -111,49 +121,62 @@ export default function Navigation() {
             borderTop: '1px solid rgba(201,168,76,0.1)',
           }}
         >
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="block font-body text-sm tracking-widest uppercase"
-              style={{ color: 'rgba(240,237,232,0.7)', letterSpacing: '0.2em' }}
-              onClick={(e) => handleNavClick(e, link.href)}
-            >
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isAnchor = link.href.startsWith('#')
+            const resolvedHref = isAnchor && !isHome ? `/${link.href}` : link.href
+            return (
+              <a
+                key={link.label}
+                href={resolvedHref}
+                className="block font-body text-sm tracking-widest uppercase"
+                style={{ color: 'rgba(240,237,232,0.7)', letterSpacing: '0.2em' }}
+                onClick={isAnchor ? (e) => handleAnchorClick(e, link.href) : undefined}
+              >
+                {link.label}
+              </a>
+            )
+          })}
         </div>
       </motion.div>
     </motion.nav>
   )
 }
 
-// ── Individual nav link with underline glow ───────────────────
+// ── Individual nav link ───────────────────────────────────────
 function NavLink({
   link,
-  onClick,
+  isHome,
+  onAnchorClick,
 }: {
   link: { label: string; href: string }
-  onClick: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void
+  isHome: boolean
+  onAnchorClick: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void
 }) {
   const [hovered, setHovered] = useState(false)
-  const isContact = link.label === 'Contact'
+  const isAnchor  = link.href.startsWith('#')
+  const isContact  = link.label === 'Contact Us'
+  const pathname   = usePathname()
+  const isActive   = !isAnchor && pathname === link.href
+  const resolvedHref = isAnchor && !isHome ? `/${link.href}` : link.href
 
   return (
     <a
-      href={link.href}
+      href={resolvedHref}
       className="relative font-body text-xs uppercase"
       style={{
-        letterSpacing: '0.15em',
-        color: isContact
+        letterSpacing: '0.13em',
+        color: isActive
+          ? '#C9A84C'
+          : isContact
           ? hovered ? '#C9A84C' : 'rgba(201,168,76,0.65)'
           : hovered ? '#C9A84C' : 'rgba(240,237,232,0.5)',
         transition: 'color 0.25s ease',
         paddingBottom: '2px',
+        textDecoration: 'none',
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={(e) => onClick(e, link.href)}
+      onClick={isAnchor ? (e) => onAnchorClick(e, link.href) : undefined}
     >
       {link.label}
 
@@ -172,7 +195,7 @@ function NavLink({
         transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
       />
 
-      {/* Contact badge — subtle gold dot */}
+      {/* Gold dot on Contact Us */}
       {isContact && (
         <span style={{
           position: 'absolute',

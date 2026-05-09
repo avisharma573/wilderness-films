@@ -43,25 +43,97 @@ export default function Footer() {
     >
       {/* Top row */}
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-16 mb-16">
-          {/* Brand */}
-          <div className="flex-1">
-            <div className="mb-6">
-              <LogoCompact size={18} />
-            </div>
+        <div className="flex flex-col lg:flex-row gap-20 mb-16">
 
-            <p className="font-body" style={{ fontSize: '0.875rem', color: 'rgba(240,237,232,0.35)', lineHeight: 1.7, maxWidth: '280px' }}>
-              Cinematic wildlife storytelling from the heart of India's most extraordinary wild places.
+          {/* Contact & address block — left */}
+          <div style={{ flex: 1 }}>
+            <p style={{
+              fontFamily: '"Space Mono", monospace',
+              fontSize: '0.62rem',
+              letterSpacing: '0.28em',
+              textTransform: 'uppercase',
+              color: 'rgba(201,168,76,0.75)',
+              marginBottom: '2rem',
+            }}>
+              Wilderness Films India Ltd.
             </p>
 
-            {/* Coordinates */}
-            <div className="mt-6 font-mono" style={{ fontSize: '0.6rem', color: 'rgba(201,168,76,0.3)', letterSpacing: '0.1em' }}>
-              <p>20.5937° N, 78.9629° E</p>
-              <p style={{ color: 'rgba(107,174,74,0.3)' }}>Republic of India</p>
-            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.6rem 3rem' }}>
+              {/* Address */}
+              <div>
+                <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.55)', marginBottom: '0.55rem' }}>
+                  Address
+                </p>
+                <p className="font-body" style={{ fontSize: '0.85rem', color: 'rgba(240,237,232,0.35)', lineHeight: 1.75 }}>
+                  1 Factory Road, Ring Road South,<br />
+                  New Delhi 110029, India
+                </p>
+              </div>
 
-            {/* Social icons */}
-            <div className="flex gap-3 mt-6">
+              {/* Phone */}
+              <div>
+                <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.55)', marginBottom: '0.55rem' }}>
+                  Phone
+                </p>
+                <div className="font-body" style={{ fontSize: '0.85rem', lineHeight: 1.75 }}>
+                  <a
+                    href="tel:+919810019704"
+                    style={{ display: 'block', color: 'rgba(240,237,232,0.35)', textDecoration: 'none', transition: 'color 0.2s' }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C9A84C' }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(240,237,232,0.35)' }}
+                  >
+                    +91 9810019704
+                  </a>
+                  <a
+                    href="tel:+919810149425"
+                    style={{ display: 'block', color: 'rgba(240,237,232,0.35)', textDecoration: 'none', transition: 'color 0.2s' }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C9A84C' }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(240,237,232,0.35)' }}
+                  >
+                    +91 9810149425
+                  </a>
+                </div>
+              </div>
+
+              {/* Email */}
+              <div>
+                <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.55)', marginBottom: '0.55rem' }}>
+                  Email
+                </p>
+                <a
+                  href="mailto:rupindang@gmail.com"
+                  className="font-body"
+                  style={{ fontSize: '0.85rem', color: 'rgba(240,237,232,0.35)', textDecoration: 'none', transition: 'color 0.2s' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C9A84C' }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(240,237,232,0.35)' }}
+                >
+                  rupindang@gmail.com
+                </a>
+              </div>
+
+              {/* Sites */}
+              <div>
+                <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.55)', marginBottom: '0.55rem' }}>
+                  Sites
+                </p>
+                <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.46rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.38)', marginBottom: '0.5rem' }}>
+                  Conservation Sites &amp; Botanical Arboreta
+                </p>
+                <div className="font-body" style={{ fontSize: '0.85rem', color: 'rgba(240,237,232,0.35)', lineHeight: 1.75 }}>
+                  <p>The Haunted House, Jabbarkhet Estate, Uttarakhand</p>
+                  <p>Mountain Quail Estate, Motidhar Valley, Uttarakhand</p>
+                  <p>Wilderness Orchard, New Delhi</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Logo + socials — right */}
+          <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+            <div style={{ marginBottom: '1.25rem' }}>
+              <LogoCompact size={26} />
+            </div>
+            <div className="flex gap-3">
               {SOCIAL_LINKS.map(({ label, href, icon }) => (
                 <a
                   key={label}
@@ -99,45 +171,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links */}
-          {[
-            {
-              title: 'Films',
-              links: ['All Documentaries', 'Short Films', 'Cinematic Reels', 'Behind The Lens'],
-            },
-            {
-              title: 'Sanctuaries',
-              links: ['Ranthambore', 'Jim Corbett', 'Kaziranga', 'Sundarbans', 'Gir Forest'],
-            },
-            {
-              title: 'Studio',
-              links: ['About Us', 'Our Filmmakers', 'Collaborations', 'Press Kit', 'Contact'],
-            },
-          ].map((col) => (
-            <div key={col.title}>
-              <p
-                className="font-mono mb-6"
-                style={{ fontSize: '0.6rem', letterSpacing: '0.25em', color: 'rgba(201,168,76,0.5)', textTransform: 'uppercase' }}
-              >
-                {col.title}
-              </p>
-              <ul className="space-y-3">
-                {col.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="font-body transition-colors duration-300"
-                      style={{ fontSize: '0.85rem', color: 'rgba(240,237,232,0.3)' }}
-                      onMouseEnter={(e) => { (e.target as HTMLElement).style.color = '#C9A84C' }}
-                      onMouseLeave={(e) => { (e.target as HTMLElement).style.color = 'rgba(240,237,232,0.3)' }}
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
         </div>
 
         {/* Gold divider */}

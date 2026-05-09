@@ -6,76 +6,39 @@
 // Drag with momentum + wheel → horizontal, no Framer Motion physics conflicts
 // ============================================================
 
-import { useRef, useState, useEffect, useCallback } from 'react'
-import { motion, useMotionValue, useInView } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
+import { motion, useInView } from 'framer-motion'
 
 interface GalleryCard {
   id: string
   title: string
-  category: string
-  description: string
   duration: string
-  imageUrl: string
-  accentColor: string
-  link?: string
+  videoId: string
+  link: string
+}
+
+function thumbUrl(videoId: string) {
+  return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+}
+function thumbFallback(videoId: string) {
+  return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
 }
 
 const GALLERY_CARDS: GalleryCard[] = [
-  {
-    id: 'land-of-the-tiger',
-    title: 'Land of the Tiger',
-    category: 'Wildlife',
-    description: 'Deep inside Central India\'s tiger reserves, a dynasty of apex predators shapes the fate of the ancient forest.',
-    duration: '52 min',
-    imageUrl: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=900&q=80',
-    accentColor: '#D4720A',
-    link: 'https://www.youtube.com/watch?v=0a55Q02BLGg',
-  },
-  {
-    id: 'rhythms-of-india',
-    title: 'Rhythms of India',
-    category: 'Culture',
-    description: 'From Rajasthan\'s folk stages to Kerala\'s midnight Theyyam — the living pulse of a civilization five millennia deep.',
-    duration: '48 min',
-    imageUrl: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=900&q=80',
-    accentColor: '#C9A84C',
-  },
-  {
-    id: 'faith-and-beyond',
-    title: 'Faith & Beyond',
-    category: 'Religion',
-    description: 'The Ganges at dawn. Varanasi\'s eternal flame. A meditation on devotion and transcendence at the world\'s oldest city.',
-    duration: '44 min',
-    imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=900&q=80',
-    accentColor: '#FF8C42',
-  },
-  {
-    id: 'himalayan-call',
-    title: 'Himalayan Call',
-    category: 'Journey',
-    description: 'Above the clouds, where the air thins and the soul expands — a pilgrimage through the roof of the world.',
-    duration: '60 min',
-    imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80',
-    accentColor: '#A8D4FF',
-  },
-  {
-    id: 'golden-landscapes',
-    title: 'Golden Landscapes',
-    category: 'Landscape',
-    description: 'From the Thar Desert\'s shifting dunes to Kerala\'s emerald backwaters — India\'s earth painted in gold.',
-    duration: '38 min',
-    imageUrl: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=900&q=80',
-    accentColor: '#C9A84C',
-  },
-  {
-    id: 'living-traditions',
-    title: 'Living Traditions',
-    category: 'Heritage',
-    description: 'Ancient crafts, forgotten languages, time-worn temples — India\'s vanishing heritage and the custodians who keep it alive.',
-    duration: '56 min',
-    imageUrl: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=900&q=80',
-    accentColor: '#B8997A',
-  },
+  { id: 'best-of-wfi',        title: 'Best of India, Best of WildFilmsIndia',                                       duration: '',  videoId: 'Quq4Y6nJCFo', link: 'https://youtu.be/Quq4Y6nJCFo' },
+  { id: 'monsoon-himalaya',   title: 'Monsoon in the Himalaya',                                                     duration: '',  videoId: 'lAefd4wp0c8', link: 'https://youtu.be/lAefd4wp0c8' },
+  { id: 'waterfalls-central', title: 'Waterfalls and Cataracts of Central India',                                   duration: '',  videoId: 'FK9ErdeBTS8', link: 'https://youtu.be/FK9ErdeBTS8' },
+  { id: 'holi-festival',      title: 'Holi - The Festival of Colours and Much Madness',                             duration: '',  videoId: 'ueQ4zpGGLe4', link: 'https://youtu.be/ueQ4zpGGLe4' },
+  { id: 'over-india',         title: 'Over India: A Fabulous Journey Across South Asia',                            duration: '',  videoId: 'FCq2osKCoLA', link: 'https://youtu.be/FCq2osKCoLA' },
+  { id: 'ganga',              title: 'Ganga by WildFilmsIndia - Our Take on the River Eternal, the Ganges',         duration: '',  videoId: 'SxssIE6-4Yo', link: 'https://youtu.be/SxssIE6-4Yo' },
+  { id: 'snow-leopard',       title: 'The Magnificent Snow Leopard of the Himalaya',                                duration: '',  videoId: 'mKt2ysizAfk', link: 'https://youtu.be/mKt2ysizAfk' },
+  { id: 'rhythms-india',      title: 'Rhythms of India – A Rich Aural Journey Across India',                        duration: '',  videoId: 'Yc8Q7y2c_Nc', link: 'https://youtu.be/Yc8Q7y2c_Nc' },
+  { id: 'leh-ladakh',         title: 'Leh and Ladakh - An Aural Journey',                                          duration: '',  videoId: '7KPpF5pyTPA', link: 'https://youtu.be/7KPpF5pyTPA' },
+  { id: 'cordyceps',          title: 'Cordyceps sinensis - The Magical Caterpillar-Fungus of the Himalaya',         duration: '',  videoId: 'j4yg4DN0rQw', link: 'https://youtu.be/j4yg4DN0rQw' },
+  { id: 'bat-festival',       title: 'Bat Killing Festival in Arunachal Pradesh',                                   duration: '',  videoId: 'hny_k0En9cU', link: 'https://youtu.be/hny_k0En9cU' },
+  { id: 'song-cranes',        title: 'Song of the Cranes: Kurja Come Home',                                        duration: '',  videoId: 'L_Z6Gg4Qu94', link: 'https://youtu.be/L_Z6Gg4Qu94' },
+  { id: 'fish-festival',      title: 'Fish Killing Festival of the Himalaya: Maund Mela',                          duration: '',  videoId: '9UtCh4Sxc3I', link: 'https://youtu.be/9UtCh4Sxc3I' },
+  { id: 'olive-ridley',       title: 'A Miracle on the Shore: Olive Ridley Hatchlings Rush to the Sea',            duration: '',  videoId: 'MRtGShgWYKw', link: 'https://youtu.be/MRtGShgWYKw' },
 ]
 
 // ── Card — FilmsSection layout: image top + dark content panel ──
@@ -99,10 +62,10 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
         overflow: 'hidden',
         // GPU layer hint
         willChange: 'transform',
-        border: `1px solid ${hovered ? `${card.accentColor}38` : 'rgba(255,255,255,0.06)'}`,
+        border: `1px solid ${hovered ? 'rgba(201,168,76,0.22)' : 'rgba(255,255,255,0.06)'}`,
         transition: 'border-color 0.35s ease, box-shadow 0.35s ease',
         boxShadow: hovered
-          ? `0 24px 70px rgba(0,0,0,0.55), 0 0 40px ${card.accentColor}10`
+          ? '0 24px 70px rgba(0,0,0,0.55), 0 0 40px rgba(201,168,76,0.06)'
           : '0 6px 30px rgba(0,0,0,0.4)',
         transform: 'translateY(0)',
         transitionProperty: 'border-color, box-shadow',
@@ -112,13 +75,18 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
     >
       {/* ── Image zone ── */}
       <div style={{ position: 'relative', height: 230, overflow: 'hidden' }}>
-        <div
+        {/* YouTube thumbnail with hqdefault fallback */}
+        <img
+          src={thumbUrl(card.videoId)}
+          alt={card.title}
+          onError={(e) => { (e.currentTarget as HTMLImageElement).src = thumbFallback(card.videoId) }}
           style={{
             position: 'absolute',
             inset: '-5%',
-            backgroundImage: `url(${card.imageUrl})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            width: '110%',
+            height: '110%',
+            objectFit: 'cover',
+            objectPosition: 'center',
             filter: 'brightness(0.45) saturate(0.6)',
             transition: 'filter 0.4s',
             willChange: 'transform',
@@ -139,15 +107,18 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
           style={{
             position: 'absolute',
             inset: 0,
-            background: `radial-gradient(ellipse at 50% 0%, ${card.accentColor}0d, transparent 70%)`,
+            background: 'radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.05), transparent 70%)',
             opacity: hovered ? 1 : 0,
             transition: 'opacity 0.4s ease',
             pointerEvents: 'none',
           }}
         />
 
-        {/* Play button */}
-        <div
+        {/* Play button — links to YouTube */}
+        <a
+          href={card.link}
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             position: 'absolute',
             inset: 0,
@@ -156,7 +127,7 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
             justifyContent: 'center',
             opacity: hovered ? 1 : 0,
             transition: 'opacity 0.25s ease',
-            pointerEvents: 'none',
+            textDecoration: 'none',
           }}
         >
           <div
@@ -168,17 +139,17 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
               alignItems: 'center',
               justifyContent: 'center',
               background: 'rgba(3,3,3,0.68)',
-              border: `1px solid ${card.accentColor}55`,
+              border: '1px solid rgba(201,168,76,0.33)',
               backdropFilter: 'blur(10px)',
               transform: hovered ? 'scale(1)' : 'scale(0.8)',
               transition: 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
             <svg width="15" height="17" viewBox="0 0 15 17" fill="none">
-              <path d="M2.5 1.5 L13.5 8.5 L2.5 15.5 Z" fill={card.accentColor} />
+              <path d="M2.5 1.5 L13.5 8.5 L2.5 15.5 Z" fill="#C9A84C" />
             </svg>
           </div>
-        </div>
+        </a>
 
         {/* Duration */}
         <div
@@ -197,24 +168,7 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
       </div>
 
       {/* ── Content panel ── */}
-      <div style={{ padding: '1.15rem 1.35rem 1.3rem', background: 'rgba(10,10,8,0.97)' }}>
-        {/* Category row */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 9 }}>
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.54rem',
-              color: card.accentColor,
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-            }}
-          >
-            {card.category}
-          </span>
-          <div style={{ width: 4, height: 4, borderRadius: '50%', background: card.accentColor, opacity: 0.45 }} />
-        </div>
-
-        {/* Title */}
+      <div style={{ padding: '1.15rem 1.35rem 1.15rem', background: 'rgba(10,10,8,0.97)' }}>
         <h3
           style={{
             fontFamily: 'var(--font-display)',
@@ -223,82 +177,11 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
             color: '#F0EDE8',
             lineHeight: 1.15,
             letterSpacing: '0.01em',
-            marginBottom: 9,
+            margin: 0,
           }}
         >
           {card.title}
         </h3>
-
-        {/* Description */}
-        <p
-          style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.78rem',
-            color: 'rgba(240,237,232,0.44)',
-            lineHeight: 1.65,
-            marginBottom: 14,
-          }}
-        >
-          {card.description}
-        </p>
-
-        {/* Watch CTA */}
-        {card.link ? (
-          <a
-            href={card.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={e => e.stopPropagation()}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              textDecoration: 'none',
-              transform: hovered ? 'translateX(4px)' : 'translateX(0)',
-              transition: 'transform 0.3s ease',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.55rem',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: card.accentColor,
-              }}
-            >
-              Watch
-            </span>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M2 6 H10 M7 3 L10 6 L7 9" stroke={card.accentColor} strokeWidth="1.1" strokeLinecap="round" />
-            </svg>
-          </a>
-        ) : (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              transform: hovered ? 'translateX(4px)' : 'translateX(0)',
-              transition: 'transform 0.3s ease',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.55rem',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: card.accentColor,
-              }}
-            >
-              Watch
-            </span>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M2 6 H10 M7 3 L10 6 L7 9" stroke={card.accentColor} strokeWidth="1.1" strokeLinecap="round" />
-            </svg>
-          </div>
-        )}
       </div>
     </motion.div>
   )
@@ -306,109 +189,32 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
 
 // ── Main section ──
 export default function WildlifeSection() {
-  const sectionRef = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(titleRef, { once: true, margin: '-100px' })
 
-  // Single GPU-composited transform value
-  const x = useMotionValue(0)
-
-  // Scroll engine state — plain refs, zero re-renders
-  const targetX = useRef(0)
-  const isDragging = useRef(false)
-  const didDrag = useRef(false)      // true if pointer moved beyond threshold this gesture
-  const dragStartClientX = useRef(0)
-  const dragStartTargetX = useRef(0)
-  const DRAG_THRESHOLD = 5           // px — below this is a click, not a drag
-
-  const getBounds = useCallback((): number => {
-    if (!containerRef.current || !trackRef.current) return 0
-    return Math.min(0, containerRef.current.clientWidth - trackRef.current.scrollWidth)
-  }, [])
-
-  const clampX = useCallback(
-    (val: number) => Math.max(getBounds(), Math.min(0, val)),
-    [getBounds]
-  )
-
-  // ── RAF lerp loop — runs always, drives GPU transform ──
-  // lerp factor 0.12 ≈ Apple-level fluid: fast enough to feel responsive,
-  // slow enough to carry natural momentum through overshoots.
-  useEffect(() => {
-    let rafId: number
-    const LERP = 0.12
-
-    const tick = () => {
-      const cur = x.get()
-      const diff = targetX.current - cur
-      // Only write to DOM when there's meaningful change
-      if (Math.abs(diff) > 0.05) {
-        x.set(cur + diff * LERP)
-      }
-      rafId = requestAnimationFrame(tick)
-    }
-
-    rafId = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafId)
-  }, [x])
-
-  // ── Wheel → horizontal scroll ──
+  // Boundary-aware wheel handler — only intercepts while horizontal scroll remains.
+  // When the row hits either edge, the event propagates to the page naturally.
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
 
     const onWheel = (e: WheelEvent) => {
-      e.preventDefault()
-      // Prefer vertical axis; fall back to horizontal (trackpad natural scroll)
-      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX
-      targetX.current = clampX(targetX.current - delta * 1.6)
+      // Only intercept horizontal scroll intent (trackpad side-swipe).
+      // Vertical scroll (deltaY dominant) passes through to the page untouched.
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault()
+        el.scrollLeft += e.deltaX
+      }
     }
 
     el.addEventListener('wheel', onWheel, { passive: false })
     return () => el.removeEventListener('wheel', onWheel)
-  }, [clampX])
-
-  // ── Pointer drag ──
-  // setPointerCapture is intentionally deferred to onPointerMove (after DRAG_THRESHOLD).
-  // Calling it in onPointerDown would capture all events immediately, preventing
-  // click events from reaching child <a> tags (e.g. the YouTube link on the tiger card).
-  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    dragStartClientX.current = e.clientX
-    dragStartTargetX.current = targetX.current
-    isDragging.current = false
-    didDrag.current = false
   }, [])
-
-  const onPointerMove = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      // Activate drag only after the pointer moves beyond the click threshold.
-      // This keeps short taps as genuine clicks.
-      if (!isDragging.current) {
-        if (Math.abs(e.clientX - dragStartClientX.current) < DRAG_THRESHOLD) return
-        isDragging.current = true
-        didDrag.current = true
-        ;(e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId)
-      }
-      const delta = e.clientX - dragStartClientX.current
-      targetX.current = clampX(dragStartTargetX.current + delta)
-    },
-    [clampX]
-  )
-
-  const onPointerUp = useCallback(() => {
-    isDragging.current = false
-    // Snap target to current rendered position — no fling, no drift
-    targetX.current = clampX(x.get())
-  }, [clampX, x])
-
-  const [isPointerDown, setIsPointerDown] = useState(false)
 
   return (
     <section
-      id="wildlife"
-      ref={sectionRef}
+      id="best-of-india"
       className="relative"
       style={{
         background: 'linear-gradient(180deg, #030303 0%, #060805 50%, #030303 100%)',
@@ -427,15 +233,6 @@ export default function WildlifeSection() {
 
       {/* ── Section header ── */}
       <div ref={titleRef} className="px-6 md:px-12 lg:px-24" style={{ marginBottom: '4rem' }}>
-        <motion.p
-          className="text-overline mb-4"
-          initial={{ opacity: 0, x: -20 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          The Wild Inhabitants
-        </motion.p>
-
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <motion.h2
             className="font-display"
@@ -450,25 +247,9 @@ export default function WildlifeSection() {
               maxWidth: '500px',
             }}
           >
-            Best of{' '}
+            The Best of{' '}
             <span style={{ color: 'var(--color-gold)', fontStyle: 'italic' }}>India</span>
           </motion.h2>
-
-          <motion.p
-            className="font-body"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            style={{
-              fontSize: '0.9rem',
-              color: 'rgba(240,237,232,0.45)',
-              maxWidth: '300px',
-              lineHeight: 1.7,
-              fontWeight: 300,
-            }}
-          >
-            Wildlife, culture, faith, and landscape — one ancient land where every frame is cinema.
-          </motion.p>
         </div>
 
         {/* Gold divider */}
@@ -484,58 +265,57 @@ export default function WildlifeSection() {
         />
       </div>
 
-      {/* ── Gallery ──
-          overflow:hidden clips the sliding track.
-          Pointer events on this layer handle drag.
-          Mask fades edges for premium look.
-      */}
+      {/* ── Gallery — native overflow-x scroll, boundary-aware wheel ── */}
       <div
         ref={containerRef}
-        onPointerDown={(e) => { setIsPointerDown(true); onPointerDown(e) }}
-        onPointerMove={onPointerMove}
-        onPointerUp={() => { setIsPointerDown(false); onPointerUp() }}
-        onPointerLeave={() => { if (isDragging.current) { setIsPointerDown(false); onPointerUp() } }}
-        onClickCapture={(e) => {
-          // If the pointer moved beyond the drag threshold, suppress the synthetic
-          // click that fires after pointerup so it doesn't trigger child links.
-          if (didDrag.current) {
-            e.preventDefault()
-            e.stopPropagation()
-            didDrag.current = false
-          }
-        }}
         style={{
-          overflow: 'hidden',
-          cursor: isPointerDown ? 'grabbing' : 'default',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          cursor: 'default',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          WebkitOverflowScrolling: 'touch',
           WebkitMaskImage:
             'linear-gradient(to right, transparent 0%, black 4%, black 93%, transparent 100%)',
           maskImage:
             'linear-gradient(to right, transparent 0%, black 4%, black 93%, transparent 100%)',
-          // Promote to own compositor layer
-          willChange: 'transform',
-        }}
+        } as React.CSSProperties}
       >
-        <motion.div
-          ref={trackRef}
+        <div
           style={{
-            x,
             display: 'flex',
             gap: 20,
             paddingLeft: 'clamp(1.5rem, 5vw, 6rem)',
             paddingRight: 'clamp(1.5rem, 5vw, 6rem)',
             paddingBottom: '1rem',
-            // Prevent text selection during drag
             userSelect: 'none',
             WebkitUserSelect: 'none',
-            // Ensure transform is GPU-composited
-            willChange: 'transform',
           }}
         >
           {GALLERY_CARDS.map((card, i) => (
             <GalleryCard key={card.id} card={card} index={i} />
           ))}
-        </motion.div>
+        </div>
       </div>
+
+      {/* ── View more ── */}
+      <motion.div
+        className="flex justify-center mt-12"
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <a
+          href="https://www.youtube.com/@WildFilmsIndia"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-primary text-xs py-3 px-8"
+          style={{ fontSize: '0.65rem', letterSpacing: '0.18em' }}
+        >
+          View More
+        </a>
+      </motion.div>
 
       {/* ── Stats bar ── */}
       <motion.div
@@ -546,15 +326,15 @@ export default function WildlifeSection() {
         transition={{ duration: 0.8 }}
       >
         {[
-          { value: '3,000+', label: 'Wild Tigers in India' },
-          { value: '27,000+', label: 'Asian Elephants' },
-          { value: '2,600+', label: 'One-Horned Rhinos' },
-          { value: '500+', label: 'Snow Leopards' },
+          { value: '150,000+', label: 'Hours of Video Content' },
+          { value: '140,000+', label: 'Videos on YouTube' },
+          { value: '5 Million+', label: 'YouTube Subscribers' },
+          { value: '37+', label: 'Years of Experience' },
         ].map((stat) => (
-          <div key={stat.label} className="text-center md:text-left">
+          <div key={stat.label} className="text-center">
             <p
               className="font-display"
-              style={{ fontSize: '2.2rem', fontWeight: 300, color: 'var(--color-gold)', lineHeight: 1 }}
+              style={{ fontSize: 'clamp(1.4rem, 2.2vw, 2rem)', fontWeight: 300, color: 'var(--color-gold)', lineHeight: 1 }}
             >
               {stat.value}
             </p>

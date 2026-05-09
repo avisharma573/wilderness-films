@@ -9,6 +9,7 @@ import HeroSection from '@/components/sections/HeroSection'
 import WildlifeSection from '@/components/sections/WildlifeSection'
 import JourneySection from '@/components/sections/JourneySection'
 import FilmsSection from '@/components/sections/FilmsSection'
+import ClientsSection from '@/components/sections/ClientsSection'
 import ContactSection from '@/components/sections/ContactSection'
 import Footer from '@/components/layout/Footer'
 
@@ -48,7 +49,10 @@ export default function HomePage() {
             {/* Section 4: Journey Across India Timeline */}
             <JourneySection />
 
-            {/* Section 5: Contact */}
+            {/* Section 5: Clients & Collaborations */}
+            <ClientsSection />
+
+            {/* Section 6: Contact */}
             <ContactSection />
           </main>
           <Footer />

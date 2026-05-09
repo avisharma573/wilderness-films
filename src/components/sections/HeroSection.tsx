@@ -146,7 +146,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          Wilderness Films India — Est. 1988
+          Wilderness Films India — Est. 1987
         </motion.p>
 
         {/* Title block — both lines grouped as one visual unit */}
@@ -160,7 +160,7 @@ export default function HeroSection() {
               animate={{ y: 0 }}
               transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontSize: 'clamp(4rem, 9vw, 8rem)',
+                fontSize: 'clamp(3.2rem, 7.5vw, 6.6rem)',
                 fontWeight: 300,
                 letterSpacing: '0.02em',
                 lineHeight: 1,
@@ -173,15 +173,15 @@ export default function HeroSection() {
             </motion.h1>
           </div>
 
-          {/* Line 2: "A Visual Mapping" — extra paddingBottom catches italic descenders (g, p) */}
-          <div style={{ overflow: 'hidden', paddingBottom: '0.32em' }}>
+          {/* Line 2: "A Visual" */}
+          <div style={{ overflow: 'hidden', paddingBottom: '0.08em' }}>
             <motion.h1
               className="font-display"
               initial={{ y: '115%' }}
               animate={{ y: 0 }}
               transition={{ delay: 0.7, duration: 1, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontSize: 'clamp(2.4rem, 5.5vw, 5rem)',
+                fontSize: 'clamp(2rem, 4.6vw, 4.2rem)',
                 fontWeight: 300,
                 letterSpacing: '0.04em',
                 lineHeight: 1,
@@ -191,7 +191,29 @@ export default function HeroSection() {
                 margin: 0,
               }}
             >
-              A Visual Mapping
+              A Visual
+            </motion.h1>
+          </div>
+
+          {/* Line 3: "Mapping" — paddingBottom catches italic 'g' descender */}
+          <div style={{ overflow: 'hidden', paddingBottom: '0.32em' }}>
+            <motion.h1
+              className="font-display"
+              initial={{ y: '115%' }}
+              animate={{ y: 0 }}
+              transition={{ delay: 0.85, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                fontSize: 'clamp(2rem, 4.6vw, 4.2rem)',
+                fontWeight: 300,
+                letterSpacing: '0.04em',
+                lineHeight: 1,
+                color: 'var(--color-gold)',
+                fontStyle: 'italic',
+                display: 'block',
+                margin: 0,
+              }}
+            >
+              Mapping
             </motion.h1>
           </div>
 
@@ -216,78 +238,11 @@ export default function HeroSection() {
               fontWeight: 300,
             }}
           >
-            Cinematic wildlife storytelling from the heart of the wild.
+            South Asia’s largest factual visual archive and production house.
           </p>
         </motion.div>
 
-        {/* CTAs */}
-        <motion.div
-          className="flex flex-wrap gap-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-        >
-          <a href="#films" className="btn-primary">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M3 2 L11 7 L3 12 Z" fill="currentColor" />
-            </svg>
-            Explore Films
-          </a>
-          <a href="#wildlife" className="btn-secondary">
-            Enter The Wild
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M2 7 H12 M8 3 L12 7 L8 11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-            </svg>
-          </a>
-        </motion.div>
-
-        {/* Hotspot dots */}
-        <motion.div
-          className="flex items-center gap-3 mt-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-        >
-          <div className="flex gap-1.5">
-            {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-              <motion.div
-                key={i}
-                className="w-1.5 h-1.5 rounded-full"
-                style={{ background: 'var(--color-gold)' }}
-                animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
-                transition={{ duration: 2, repeat: Infinity, delay: i * 0.2, ease: 'easeInOut' }}
-              />
-            ))}
-          </div>
-          <span
-            className="font-mono"
-            style={{ fontSize: '0.65rem', color: 'rgba(201,168,76,0.5)', letterSpacing: '0.15em' }}
-          >
-            7 WILDLIFE SANCTUARIES
-          </span>
-        </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 0.8 }}
-      >
-        <span
-          className="font-mono text-xs tracking-widest"
-          style={{ color: 'rgba(201,168,76,0.4)' }}
-        >
-          SCROLL
-        </span>
-        <motion.div
-          className="w-px h-12"
-          style={{ background: 'linear-gradient(to bottom, rgba(201,168,76,0.5), transparent)' }}
-          animate={{ scaleY: [0, 1, 0], originY: 'top' }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </motion.div>
 
       {/* Corner coordinates */}
       <div

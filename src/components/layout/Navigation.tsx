@@ -54,7 +54,7 @@ export default function Navigation() {
       <div className="relative max-w-7xl mx-auto flex items-center justify-between h-20">
         {/* Logo */}
         <Link href="/" style={{ textDecoration: 'none' }}>
-          <LogoCompact size={20} />
+          <LogoCompact size={18} />
         </Link>
 
         {/* Desktop nav */}

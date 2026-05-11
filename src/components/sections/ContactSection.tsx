@@ -275,26 +275,30 @@ function ContactForm({ inView }: { inView: boolean }) {
     e.preventDefault()
     if (btnState === 'loading' || btnState === 'success') return
 
+    // Honeypot — bots fill this, humans never see it
+    if (fields.website) return
+
     setBtnState('loading')
     setErrorMsg('')
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
-          name:    fields.name,
-          email:   fields.email,
-          subject: fields.subject,
-          message: fields.message,
-          website: fields.website, // honeypot — bots fill this, humans never see it
+          access_key: '1292336c-c396-47df-8b71-307a0d8e7877',
+          from_name:  fields.name,
+          reply_to:   fields.email,
+          cc:         'dharanshidang@gmail.com',
+          subject:    `[WildFilmsIndia] ${fields.subject}`,
+          message:    `From: ${fields.name} <${fields.email}>\n\n${fields.message}`,
         }),
       })
 
-      const data: { success?: boolean; error?: string } = await res.json()
+      const data: { success?: boolean; message?: string } = await res.json()
 
-      if (!res.ok) {
-        setErrorMsg(data.error ?? 'Something went wrong. Please try again.')
+      if (!res.ok || !data.success) {
+        setErrorMsg(data.message ?? 'Something went wrong. Please try again.')
         setBtnState('error')
         return
       }
@@ -317,40 +321,23 @@ function ContactForm({ inView }: { inView: boolean }) {
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
       style={{
-        background: 'linear-gradient(145deg, rgba(255,255,255,0.040) 0%, rgba(201,168,76,0.016) 100%)',
-        border: '1px solid rgba(201,168,76,0.16)',
-        borderRadius: '3px',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
+        background: 'rgba(255,255,255,0.025)',
+        border: '1px solid rgba(201,168,76,0.12)',
+        borderRadius: '12px',
         padding: '2.5rem',
         position: 'relative',
         overflow: 'hidden',
         height: '100%',
-        minHeight: '560px',
+        minHeight: 'clamp(420px, 60vh, 560px)',
         display: 'flex',
         flexDirection: 'column',
+        boxShadow: '0 32px 80px rgba(0,0,0,0.4)',
       }}
     >
-      {/* Corner accents */}
+      {/* Subtle inner glow */}
       <div style={{
-        position: 'absolute', top: 0, left: 0,
-        width: '56px', height: '56px',
-        borderBottom: '1px solid rgba(201,168,76,0.14)',
-        borderRight:  '1px solid rgba(201,168,76,0.14)',
-        background: 'linear-gradient(135deg, rgba(201,168,76,0.10), transparent)',
-      }} />
-      <div style={{
-        position: 'absolute', bottom: 0, right: 0,
-        width: '40px', height: '40px',
-        borderTop:  '1px solid rgba(107,174,74,0.12)',
-        borderLeft: '1px solid rgba(107,174,74,0.12)',
-      }} />
-
-      {/* Ambient glow at top */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0,
-        height: '1px',
-        background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.35), transparent)',
+        position: 'absolute', inset: 0, borderRadius: '12px', pointerEvents: 'none',
+        background: 'radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.06) 0%, transparent 60%)',
       }} />
 
       {/* Card label */}
@@ -359,7 +346,7 @@ function ContactForm({ inView }: { inView: boolean }) {
         fontSize: '0.50rem',
         letterSpacing: '0.28em',
         textTransform: 'uppercase',
-        color: 'rgba(201,168,76,0.40)',
+        color: 'rgba(201,168,76,0.45)',
         marginBottom: '1.75rem',
       }}>
         Send A Message
@@ -380,8 +367,7 @@ function ContactForm({ inView }: { inView: boolean }) {
           />
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem', flex: 1 }}>
           {/* Row: name + email */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
-               className="flex-col sm:grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}

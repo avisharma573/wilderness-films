@@ -144,7 +144,7 @@ function MilestoneDot({ stop, isInView }: { stop: JourneyStop; isInView: boolean
         height: 16,
         borderRadius: '50%',
         border: `1px solid ${stop.accentColor}55`,
-        background: '#0d0b09',
+        background: '#030303',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -177,13 +177,13 @@ function JourneyCard({ stop }: { stop: JourneyStop; index: number }) {
   const [hovered, setHovered] = useState(false)
 
   return (
-    <div ref={ref} style={{ display: 'flex', alignItems: 'flex-start', gap: 0, marginBottom: '2.5rem' }}>
+    <div ref={ref} style={{ display: 'flex', alignItems: 'flex-start', gap: 0, marginBottom: 'clamp(1.5rem, 4vw, 2.5rem)' }}>
 
       {/* ── Milestone dot column ── */}
       <div
         ref={dotRef}
         style={{
-          width: 88,
+          width: 56,
           flexShrink: 0,
           display: 'flex',
           flexDirection: 'column',
@@ -226,7 +226,7 @@ function JourneyCard({ stop }: { stop: JourneyStop; index: number }) {
         }}
       >
         {/* ── Cinematic image ── */}
-        <div style={{ position: 'relative', height: 340, overflow: 'hidden' }}>
+        <div style={{ position: 'relative', height: 'clamp(200px, 45vw, 340px)', overflow: 'hidden' }}>
           {/* Photo */}
           <div
             style={{
@@ -421,9 +421,9 @@ export default function JourneySection() {
       ref={sectionRef}
       className="relative overflow-hidden"
       style={{
-        background: '#0d0b09',
-        paddingTop: '8rem',
-        paddingBottom: '8rem',
+        background: '#030303',
+        paddingTop: 'clamp(4rem, 10vw, 8rem)',
+        paddingBottom: 'clamp(4rem, 10vw, 8rem)',
       }}
     >
       {/* Atmospheric background */}
@@ -511,7 +511,7 @@ export default function JourneySection() {
           <div
             style={{
               position: 'absolute',
-              left: 43,       // center of dot column (88px / 2 = 44, minus 1px for line width)
+              left: 27,       // center of dot column (56px / 2 = 28, minus 1px for line width)
               top: 0,
               bottom: 0,
               width: 1,

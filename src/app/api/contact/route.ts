@@ -71,25 +71,37 @@ export async function POST(req: NextRequest) {
     message: sanitizeField(message),
   }
 
-  // 8. Deliver the message
-  //    Replace this block with your chosen email provider:
-  //      - Resend:   https://resend.com
-  //      - SendGrid: https://sendgrid.com
-  //      - AWS SES:  https://aws.amazon.com/ses/
-  //
-  //    Example with Resend:
-  //      import { Resend } from 'resend'
-  //      const resend = new Resend(process.env.RESEND_API_KEY)
-  //      await resend.emails.send({
-  //        from:    'no-reply@wildfilmsindia.com',
-  //        to:      process.env.CONTACT_EMAIL!,
-  //        subject: `[Contact] ${clean.subject}`,
-  //        text:    `From: ${clean.name} <${clean.email}>\n\n${clean.message}`,
-  //      })
+  // 8. Deliver via Web3Forms
+  const payload = {
+    access_key: process.env.WEB3FORMS_KEY!,
+    from_name:  clean.name,
+    reply_to:   clean.email,
+    cc:         'dharanshidang@gmail.com',
+    subject:    `[WildFilmsIndia] ${clean.subject}`,
+    message:    `From: ${clean.name} <${clean.email}>\n\n${clean.message}`,
+  }
+
+  let w3res: Response
+  try {
+    w3res = await fetch('https://api.web3forms.com/submit', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body:    JSON.stringify(payload),
+    })
+  } catch (e) {
+    console.error('[web3forms] fetch threw:', e)
+    return err('Failed to send message. Please try again.', 502)
+  }
+
+  const w3data = await w3res.json().catch(() => ({}))
+  console.log('[web3forms] status:', w3res.status, 'body:', w3data)
+
+  if (!w3res.ok) {
+    return err('Failed to send message. Please try again.', 502)
+  }
 
   if (process.env.NODE_ENV === 'development') {
-    // Only log in development — never log user data in production
-    console.log('[contact]', { ...clean, ip })
+    console.log('[contact] sent', { ...clean, ip })
   }
 
   return NextResponse.json({ success: true }, { status: 200 })

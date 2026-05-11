@@ -16,10 +16,10 @@ export default function LoadingScreen() {
           return 100
         }
         // Natural-feeling non-linear progress
-        const increment = prev < 60 ? Math.random() * 4 + 2 : Math.random() * 2 + 0.5
+        const increment = prev < 60 ? Math.random() * 8 + 4 : Math.random() * 5 + 2
         return Math.min(prev + increment, 100)
       })
-    }, 80)
+    }, 60)
 
     return () => clearInterval(interval)
   }, [])

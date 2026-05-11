@@ -138,15 +138,15 @@ export default function ClientsSection() {
     <section
       ref={ref}
       style={{
-        background: '#080c09',
-        padding: '60px 0 68px',
+        background: '#030303',
+        padding: 'clamp(36px, 8vw, 60px) 0 clamp(40px, 8vw, 68px)',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2,
-        background: 'linear-gradient(to bottom, rgba(8,12,9,0.7) 0%, transparent 16%, transparent 84%, rgba(8,12,9,0.7) 100%)',
+        background: 'linear-gradient(to bottom, rgba(3,3,3,0.7) 0%, transparent 16%, transparent 84%, rgba(3,3,3,0.7) 100%)',
       }} />
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1,

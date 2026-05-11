@@ -43,7 +43,7 @@ export default function Footer() {
     >
       {/* Top row */}
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-20 mb-16">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 mb-12 lg:mb-16">
 
           {/* Contact & address block — left */}
           <div style={{ flex: 1 }}>
@@ -58,7 +58,7 @@ export default function Footer() {
               Wilderness Films India Ltd.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.6rem 3rem' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '1.6rem 3rem' }}>
               {/* Address */}
               <div>
                 <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.55)', marginBottom: '0.55rem' }}>
@@ -129,7 +129,7 @@ export default function Footer() {
           </div>
 
           {/* Logo + socials — right */}
-          <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} className="lg:items-end">
             <div style={{ marginBottom: '1.25rem' }}>
               <LogoCompact size={26} />
             </div>
@@ -178,9 +178,6 @@ export default function Footer() {
 
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <p className="font-mono" style={{ fontSize: '0.6rem', color: 'rgba(240,237,232,0.2)', letterSpacing: '0.1em' }}>
-            © 2024 Wilderness Films India. All rights reserved.
-          </p>
 
           <div className="flex gap-6">
             {['Privacy', 'Terms', 'Cookies'].map((item) => (
@@ -196,10 +193,6 @@ export default function Footer() {
               </a>
             ))}
           </div>
-
-          <p className="font-mono" style={{ fontSize: '0.6rem', color: 'rgba(201,168,76,0.2)', letterSpacing: '0.1em' }}>
-            CRAFTED WITH ♥ FOR THE WILD
-          </p>
         </div>
       </div>
     </footer>

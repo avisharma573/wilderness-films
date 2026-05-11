@@ -55,6 +55,7 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
       transition={{ delay: index * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="wfi-gallery-card"
       style={{
         width: 320,
         flexShrink: 0,
@@ -74,7 +75,7 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
       }}
     >
       {/* ── Image zone ── */}
-      <div style={{ position: 'relative', height: 230, overflow: 'hidden' }}>
+      <div className="wfi-gallery-img" style={{ position: 'relative', height: 230, overflow: 'hidden' }}>
         {/* YouTube thumbnail with hqdefault fallback */}
         <img
           src={thumbUrl(card.videoId)}
@@ -218,8 +219,8 @@ export default function WildlifeSection() {
       className="relative"
       style={{
         background: 'linear-gradient(180deg, #030303 0%, #060805 50%, #030303 100%)',
-        paddingTop: '8rem',
-        paddingBottom: '8rem',
+        paddingTop: 'clamp(4rem, 10vw, 8rem)',
+        paddingBottom: 'clamp(4rem, 10vw, 8rem)',
       }}
     >
       {/* Ambient background texture */}

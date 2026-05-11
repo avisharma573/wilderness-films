@@ -345,6 +345,23 @@ export default function FilmsSection() {
           text-align: center;
         }
 
+        /* ── Mobile responsive ── */
+        @media (max-width: 640px) {
+          .wf-films {
+            height: min(700px, 90vh);
+            min-height: 480px;
+          }
+          .wf-wall {
+            padding: 160px 4px 0;
+            gap: 4px;
+          }
+          .wf-fade-top { height: 240px; }
+          .wfp-title { font-size: 1rem; }
+          .wf-header { padding-top: 40px; }
+          .wf-header-title { letter-spacing: 0.06em; }
+          .wf-header-sub { font-size: 0.72rem; padding: 0 16px; }
+        }
+
         /* ── Bottom CTA overlay ── */
         .wf-cta {
           position: absolute;

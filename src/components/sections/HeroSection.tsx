@@ -136,8 +136,8 @@ export default function HeroSection() {
           No x/y transforms on this wrapper — content is absolutely stable.
           Mouse parallax removed: it caused visible text drift/shake.        */}
       <div
-        className="relative z-20 h-full flex flex-col justify-center px-8 md:px-16 lg:px-24"
-        style={{ maxWidth: '680px' }}
+        className="relative z-20 h-full flex flex-col justify-center px-6 md:px-16 lg:px-24"
+        style={{ maxWidth: '680px', width: '100%' }}
       >
         {/* Overline */}
         <motion.p
@@ -244,15 +244,6 @@ export default function HeroSection() {
 
       </div>
 
-      {/* Corner coordinates */}
-      <div
-        className="absolute top-20 right-8 md:right-16 font-mono text-right z-20"
-        style={{ color: 'rgba(201,168,76,0.2)', fontSize: '0.6rem', letterSpacing: '0.2em' }}
-      >
-        <p>20.5937° N</p>
-        <p>78.9629° E</p>
-        <p className="mt-1" style={{ color: 'rgba(107,174,74,0.4)' }}>INDIA</p>
-      </div>
     </section>
   )
 }

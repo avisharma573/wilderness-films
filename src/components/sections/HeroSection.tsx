@@ -1,28 +1,25 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 
-function FloatingParticle({ delay, duration }: { delay: number; duration: number }) {
-  const left = `${Math.random() * 100}%`
-  const size = Math.random() * 2.5 + 0.8
 
+interface ParticleProps {
+  delay: number
+  duration: number
+  left: string
+  size: number
+  color: string
+  riseY: number
+  driftX: number
+}
+
+function FloatingParticle({ delay, duration, left, size, color, riseY, driftX }: ParticleProps) {
   return (
     <motion.div
       className="absolute rounded-full pointer-events-none"
-      style={{
-        left,
-        bottom: '-10px',
-        width: size,
-        height: size,
-        background: Math.random() > 0.5 ? '#C9A84C' : '#6BAE4A',
-        opacity: 0,
-      }}
-      animate={{
-        y: [0, -(Math.random() * 380 + 180)],
-        opacity: [0, 0.5, 0],
-        x: [0, (Math.random() - 0.5) * 80],
-      }}
+      style={{ left, bottom: '-10px', width: size, height: size, background: color, opacity: 0 }}
+      animate={{ y: [0, -riseY], opacity: [0, 0.5, 0], x: [0, driftX] }}
       transition={{ duration, delay, repeat: Infinity, ease: 'easeOut' }}
     />
   )
@@ -35,15 +32,14 @@ export default function HeroSection() {
       id: i,
       delay: i * 0.8,
       duration: 6 + Math.random() * 6,
+      left: `${Math.random() * 100}%`,
+      size: Math.random() * 2.5 + 0.8,
+      color: Math.random() > 0.5 ? '#C9A84C' : '#6BAE4A',
+      riseY: Math.random() * 380 + 180,
+      driftX: (Math.random() - 0.5) * 80,
     }))
   )
 
-  // Scroll-driven parallax for background only — content is never transformed
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end start'],
-  })
-  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '-12%'])
 
   return (
     <section
@@ -51,25 +47,27 @@ export default function HeroSection() {
       className="relative w-full overflow-hidden"
       style={{ height: '100svh', minHeight: '680px' }}
     >
-      {/* ── Background: Ken Burns + scroll parallax ── */}
+      {/* ── Background video ── */}
       <div className="absolute inset-0 overflow-hidden">
-        <motion.div
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
           style={{
             position: 'absolute',
+            top: 0,
             left: 0,
-            right: 0,
-            top: '-12%',
-            height: '124%',
-            backgroundImage: 'url(/himalayan.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center 50%',
-            filter: 'brightness(0.52) saturate(0.75)',
-            willChange: 'transform',
-            y: imageY,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center center',
+            filter: 'brightness(0.68) saturate(0.75)',
           }}
-          animate={{ scale: [1, 1.03] }}
-          transition={{ duration: 26, ease: 'linear', repeat: Infinity, repeatType: 'reverse' }}
-        />
+        >
+          <source src="/hero-bg.mov" type="video/mp4" />
+          <source src="/hero-bg.mov" type="video/quicktime" />
+        </video>
       </div>
 
       {/* ── Gradient overlays ── */}
@@ -77,7 +75,7 @@ export default function HeroSection() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'linear-gradient(to right, rgba(3,3,3,0.82) 0%, rgba(3,3,3,0.55) 35%, rgba(3,3,3,0.18) 65%, transparent 100%)',
+            'linear-gradient(to right, rgba(3,3,3,0.65) 0%, rgba(3,3,3,0.38) 35%, rgba(3,3,3,0.10) 65%, transparent 100%)',
         }}
       />
       <div
@@ -128,7 +126,7 @@ export default function HeroSection() {
       {/* ── Floating particles ── */}
       <div className="absolute inset-0 pointer-events-none z-10">
         {particles.map((p) => (
-          <FloatingParticle key={p.id} delay={p.delay} duration={p.duration} />
+          <FloatingParticle key={p.id} delay={p.delay} duration={p.duration} left={p.left} size={p.size} color={p.color} riseY={p.riseY} driftX={p.driftX} />
         ))}
       </div>
 
@@ -137,7 +135,7 @@ export default function HeroSection() {
           Mouse parallax removed: it caused visible text drift/shake.        */}
       <div
         className="relative z-20 h-full flex flex-col justify-center px-6 md:px-16 lg:px-24"
-        style={{ maxWidth: '680px', width: '100%' }}
+        style={{ maxWidth: '680px', width: '100%', paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         {/* Overline */}
         <motion.p
@@ -232,7 +230,7 @@ export default function HeroSection() {
             className="font-body"
             style={{
               fontSize: 'clamp(0.8rem, 1.1vw, 0.95rem)',
-              color: 'rgba(240,237,232,0.55)',
+              color: 'rgba(240,237,232,0.82)',
               maxWidth: '360px',
               lineHeight: 1.7,
               fontWeight: 300,

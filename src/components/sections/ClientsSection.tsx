@@ -33,18 +33,18 @@ const CLIENTS: Client[] = [
 // ── Single card ──
 function LogoCard({ client, hovered }: { client: Client; hovered: boolean }) {
   const imgFilter = hovered
-    ? 'brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg)'
-    : 'brightness(0) invert(1)'
+    ? 'brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg) opacity(1)'
+    : 'brightness(0) invert(1) opacity(0.75)'
 
   return (
     <div style={{
       flexShrink: 0,
-      width: 164,
-      height: 76,
+      width: 'clamp(120px, 36vw, 164px)',
+      height: 'clamp(60px, 15vw, 76px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '0 20px',
+      padding: '0 16px',
       overflow: 'hidden',
     }}>
       {client.logo ? (
@@ -70,7 +70,7 @@ function LogoCard({ client, hovered }: { client: Client; hovered: boolean }) {
           textTransform: 'uppercase',
           color: hovered
             ? 'rgba(201,168,76,0.9)'
-            : 'rgba(240,237,232,0.72)',
+            : 'rgba(240,237,232,0.55)',
           whiteSpace: 'nowrap',
           transition: 'color 0.3s ease',
           textAlign: 'center',
@@ -114,9 +114,8 @@ function MarqueeRow({
             style={{
               flexShrink: 0,
               borderRadius: '2px',
-              border: '1px solid rgba(255,255,255,0.07)',
-              background: 'rgba(255,255,255,0.025)',
-              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              background: 'rgba(255,255,255,0.06)',
               cursor: 'default',
             }}
           >
@@ -144,10 +143,6 @@ export default function ClientsSection() {
         position: 'relative',
       }}
     >
-      <div style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2,
-        background: 'linear-gradient(to bottom, rgba(3,3,3,0.7) 0%, transparent 16%, transparent 84%, rgba(3,3,3,0.7) 100%)',
-      }} />
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1,
         background: 'radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.025) 0%, transparent 65%)',
@@ -207,7 +202,13 @@ export default function ClientsSection() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.3 }}
-          style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px',
+            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
+            maskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
+          }}
         >
           <MarqueeRow direction="left"  duration={44} />
           <MarqueeRow direction="right" duration={52} />

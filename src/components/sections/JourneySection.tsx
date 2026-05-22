@@ -226,7 +226,7 @@ function JourneyCard({ stop }: { stop: JourneyStop; index: number }) {
         }}
       >
         {/* ── Cinematic image ── */}
-        <div style={{ position: 'relative', height: 'clamp(200px, 45vw, 340px)', overflow: 'hidden' }}>
+        <div className="wfi-journey-img" style={{ position: 'relative', height: 'clamp(200px, 45vw, 340px)', overflow: 'hidden' }}>
           {/* Photo */}
           <div
             style={{
@@ -422,10 +422,15 @@ export default function JourneySection() {
       className="relative overflow-hidden"
       style={{
         background: '#030303',
-        paddingTop: 'clamp(4rem, 10vw, 8rem)',
-        paddingBottom: 'clamp(4rem, 10vw, 8rem)',
+        paddingTop: 'clamp(2.5rem, 6vw, 4rem)',
+        paddingBottom: 'clamp(2.5rem, 6vw, 4rem)',
       }}
     >
+      <style>{`
+        @media (min-width: 1024px) {
+          .wfi-journey-img { height: 220px !important; }
+        }
+      `}</style>
       {/* Atmospheric background */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Warm ambient glow — top center */}
@@ -471,7 +476,7 @@ export default function JourneySection() {
       <div className="relative max-w-5xl mx-auto px-6 md:px-12 lg:px-16">
 
         {/* ── Section header ── */}
-        <div ref={titleRef} style={{ textAlign: 'center', marginBottom: '5rem' }}>
+        <div ref={titleRef} style={{ textAlign: 'center', marginBottom: '3rem' }}>
           <motion.h2
             className="font-display"
             initial={{ opacity: 0, y: 30 }}

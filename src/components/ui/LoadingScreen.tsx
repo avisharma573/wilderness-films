@@ -8,16 +8,12 @@ export default function LoadingScreen() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    // Animate progress bar
     const interval = setInterval(() => {
       setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval)
-          return 100
-        }
-        // Natural-feeling non-linear progress
-        const increment = prev < 60 ? Math.random() * 8 + 4 : Math.random() * 5 + 2
-        return Math.min(prev + increment, 100)
+        if (prev >= 100) { clearInterval(interval); return 100 }
+        // Fills ~1.8s, parks just under 100 until timer dismisses
+        const increment = prev < 50 ? Math.random() * 5 + 3 : Math.random() * 2.5 + 1
+        return Math.min(prev + increment, 98)
       })
     }, 60)
 

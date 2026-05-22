@@ -1,3 +1,19 @@
 node_modules
 .next
 .next/
+tsconfig.tsbuildinfo
+
+# Environment variables — never commit
+.env
+.env.local
+.env*.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Screenshots / temp files
+Screenshot*.png
+*.html.bak

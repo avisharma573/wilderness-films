@@ -324,11 +324,11 @@ function ContactForm({ inView }: { inView: boolean }) {
         background: 'rgba(255,255,255,0.025)',
         border: '1px solid rgba(201,168,76,0.12)',
         borderRadius: '12px',
-        padding: '2.5rem',
+        padding: 'clamp(1.25rem, 4vw, 2.5rem)',
         position: 'relative',
         overflow: 'hidden',
         height: '100%',
-        minHeight: 'clamp(420px, 60vh, 560px)',
+        minHeight: 'clamp(380px, 60vh, 560px)',
         display: 'flex',
         flexDirection: 'column',
         boxShadow: '0 32px 80px rgba(0,0,0,0.4)',
@@ -543,7 +543,7 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative overflow-hidden pt-28 md:pt-36 pb-12 md:pb-16 px-6 md:px-12 lg:px-24"
+      className="relative overflow-hidden pt-16 md:pt-36 pb-10 md:pb-16 px-5 md:px-12 lg:px-24"
       style={{ background: 'linear-gradient(180deg, #030303 0%, #050502 55%, #030303 100%)' }}
     >
       <GrainOverlay />

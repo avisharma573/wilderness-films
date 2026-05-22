@@ -3,7 +3,7 @@
    Cinematic dark theme with earthy gold accents
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito:wght@800;900&family=Outfit:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito:wght@800;900&family=Outfit:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -359,13 +359,27 @@ canvas {
     padding: 0.75rem 1.25rem;
     font-size: 0.75rem;
   }
+}
 
+/* Gallery card sizing — phones: ~72vw wide so you see 1+ card and a peek */
+@media (max-width: 480px) {
   .wfi-gallery-card {
-    width: 220px !important;
+    width: calc(76vw - 20px) !important;
   }
 
   .wfi-gallery-img {
-    height: 155px !important;
+    height: 44vw !important;
+  }
+}
+
+/* Very small phones (iPhone SE, 375px) */
+@media (max-width: 390px) {
+  .wfi-gallery-card {
+    width: calc(82vw - 20px) !important;
+  }
+
+  .wfi-gallery-img {
+    height: 46vw !important;
   }
 }
 

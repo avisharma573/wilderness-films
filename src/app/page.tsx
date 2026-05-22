@@ -6,7 +6,6 @@ import LoadingScreen from '@/components/ui/LoadingScreen'
 import Navigation from '@/components/layout/Navigation'
 import HeroSection from '@/components/sections/HeroSection'
 import WildlifeSection from '@/components/sections/WildlifeSection'
-import JourneySection from '@/components/sections/JourneySection'
 import FilmsSection from '@/components/sections/FilmsSection'
 import ClientsSection from '@/components/sections/ClientsSection'
 import ContactSection from '@/components/sections/ContactSection'
@@ -16,41 +15,33 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate premium asset loading experience
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
+    const timer = setTimeout(() => setIsLoading(false), 2000)
     return () => clearTimeout(timer)
   }, [])
 
+  // Scroll to hash once loader is dismissed
+  useEffect(() => {
+    if (isLoading) return
+    const hash = window.location.hash
+    if (!hash) return
+    const el = document.querySelector(hash)
+    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100)
+  }, [isLoading])
+
   return (
     <>
-      {/* Loading screen with cinematic entrance */}
       <AnimatePresence mode="wait">
         {isLoading && <LoadingScreen key="loading" />}
       </AnimatePresence>
 
-      {/* Main site — fades in after loading */}
       {!isLoading && (
         <>
           <Navigation />
           <main>
-            {/* Section 1: Hero with 3D Globe */}
             <HeroSection />
-
-            {/* Section 2: Wildlife Species Cards */}
             <WildlifeSection />
-
-            {/* Section 3: Featured Films */}
             <FilmsSection />
-
-            {/* Section 4: Journey Across India Timeline */}
-            <JourneySection />
-
-            {/* Section 5: Clients & Collaborations */}
             <ClientsSection />
-
-            {/* Section 6: Contact */}
             <ContactSection />
           </main>
           <Footer />

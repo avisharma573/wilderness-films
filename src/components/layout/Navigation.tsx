@@ -9,7 +9,6 @@ import { LogoCompact } from '@/components/ui/Logo'
 const NAV_LINKS: { label: string; href: string }[] = [
   { label: 'Films',      href: '#best-of-india'        },
   { label: 'India',      href: '#journey-across-india' },
-  { label: 'Highlights', href: '#recent-highlights'    },
   { label: 'About Us',   href: '/about'                },
   { label: 'Offerings',  href: '/offerings'            },
   { label: 'Contact Us', href: '#contact'              },
@@ -124,16 +123,30 @@ export default function Navigation() {
           {NAV_LINKS.map((link) => {
             const isAnchor = link.href.startsWith('#')
             const resolvedHref = isAnchor && !isHome ? `/${link.href}` : link.href
+            const mobileStyle = { color: 'rgba(240,237,232,0.7)', letterSpacing: '0.2em' }
+            if (isAnchor) {
+              return (
+                <a
+                  key={link.label}
+                  href={resolvedHref}
+                  className="block font-body text-sm tracking-widest uppercase"
+                  style={mobileStyle}
+                  onClick={(e) => handleAnchorClick(e, link.href)}
+                >
+                  {link.label}
+                </a>
+              )
+            }
             return (
-              <a
+              <Link
                 key={link.label}
                 href={resolvedHref}
                 className="block font-body text-sm tracking-widest uppercase"
-                style={{ color: 'rgba(240,237,232,0.7)', letterSpacing: '0.2em' }}
-                onClick={isAnchor ? (e) => handleAnchorClick(e, link.href) : undefined}
+                style={mobileStyle}
+                onClick={() => setMenuOpen(false)}
               >
                 {link.label}
-              </a>
+              </Link>
             )
           })}
         </div>
@@ -159,28 +172,21 @@ function NavLink({
   const isActive   = !isAnchor && pathname === link.href
   const resolvedHref = isAnchor && !isHome ? `/${link.href}` : link.href
 
-  return (
-    <a
-      href={resolvedHref}
-      className="relative font-body text-xs uppercase"
-      style={{
-        letterSpacing: '0.13em',
-        color: isActive
-          ? '#C9A84C'
-          : isContact
-          ? hovered ? '#C9A84C' : 'rgba(201,168,76,0.65)'
-          : hovered ? '#C9A84C' : 'rgba(240,237,232,0.5)',
-        transition: 'color 0.25s ease',
-        paddingBottom: '2px',
-        textDecoration: 'none',
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={isAnchor ? (e) => onAnchorClick(e, link.href) : undefined}
-    >
-      {link.label}
+  const sharedStyle = {
+    letterSpacing: '0.13em',
+    color: isActive
+      ? '#C9A84C'
+      : isContact
+      ? hovered ? '#C9A84C' : 'rgba(201,168,76,0.65)'
+      : hovered ? '#C9A84C' : 'rgba(240,237,232,0.5)',
+    transition: 'color 0.25s ease',
+    paddingBottom: '2px',
+    textDecoration: 'none',
+  }
 
-      {/* Animated underline */}
+  const innerContent = (
+    <>
+      {link.label}
       <motion.span
         style={{
           position: 'absolute',
@@ -194,8 +200,6 @@ function NavLink({
         animate={{ width: hovered ? '100%' : '0%' }}
         transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
       />
-
-      {/* Gold dot on Contact Us */}
       {isContact && (
         <span style={{
           position: 'absolute',
@@ -208,6 +212,33 @@ function NavLink({
           opacity: 0.7,
         }} />
       )}
-    </a>
+    </>
+  )
+
+  if (isAnchor) {
+    return (
+      <a
+        href={resolvedHref}
+        className="relative font-body text-xs uppercase"
+        style={sharedStyle}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onClick={(e) => onAnchorClick(e, link.href)}
+      >
+        {innerContent}
+      </a>
+    )
+  }
+
+  return (
+    <Link
+      href={resolvedHref}
+      className="relative font-body text-xs uppercase"
+      style={sharedStyle}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {innerContent}
+    </Link>
   )
 }

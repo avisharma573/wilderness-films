@@ -15,6 +15,7 @@ interface GalleryCard {
   duration: string
   videoId: string
   link: string
+  customThumb?: string
 }
 
 function thumbUrl(videoId: string) {
@@ -25,19 +26,19 @@ function thumbFallback(videoId: string) {
 }
 
 const GALLERY_CARDS: GalleryCard[] = [
-  { id: 'best-of-wfi',        title: 'Best of India, Best of WildFilmsIndia',                                       duration: '',  videoId: 'Quq4Y6nJCFo', link: 'https://youtu.be/Quq4Y6nJCFo' },
+  { id: 'best-of-wfi',        title: 'Best of India, Best of WildFilmsIndia',                                       duration: '',  videoId: 'Quq4Y6nJCFo', link: 'https://youtu.be/Quq4Y6nJCFo', customThumb: '/best-of-india-thumb.png' },
   { id: 'monsoon-himalaya',   title: 'Monsoon in the Himalaya',                                                     duration: '',  videoId: 'lAefd4wp0c8', link: 'https://youtu.be/lAefd4wp0c8' },
   { id: 'waterfalls-central', title: 'Waterfalls and Cataracts of Central India',                                   duration: '',  videoId: 'FK9ErdeBTS8', link: 'https://youtu.be/FK9ErdeBTS8' },
   { id: 'holi-festival',      title: 'Holi - The Festival of Colours and Much Madness',                             duration: '',  videoId: 'ueQ4zpGGLe4', link: 'https://youtu.be/ueQ4zpGGLe4' },
   { id: 'over-india',         title: 'Over India: A Fabulous Journey Across South Asia',                            duration: '',  videoId: 'FCq2osKCoLA', link: 'https://youtu.be/FCq2osKCoLA' },
   { id: 'ganga',              title: 'Ganga by WildFilmsIndia - Our Take on the River Eternal, the Ganges',         duration: '',  videoId: 'SxssIE6-4Yo', link: 'https://youtu.be/SxssIE6-4Yo' },
   { id: 'snow-leopard',       title: 'The Magnificent Snow Leopard of the Himalaya',                                duration: '',  videoId: 'mKt2ysizAfk', link: 'https://youtu.be/mKt2ysizAfk' },
-  { id: 'rhythms-india',      title: 'Rhythms of India – A Rich Aural Journey Across India',                        duration: '',  videoId: 'Yc8Q7y2c_Nc', link: 'https://youtu.be/Yc8Q7y2c_Nc' },
+  { id: 'rhythms-india',      title: 'Rhythms of India – A Rich Aural Journey Across India',                        duration: '',  videoId: 'Yc8Q7y2c_Nc', link: 'https://youtu.be/Yc8Q7y2c_Nc', customThumb: '/rhythms-india-thumb.png' },
   { id: 'leh-ladakh',         title: 'Leh and Ladakh - An Aural Journey',                                          duration: '',  videoId: '7KPpF5pyTPA', link: 'https://youtu.be/7KPpF5pyTPA' },
   { id: 'cordyceps',          title: 'Cordyceps sinensis - The Magical Caterpillar-Fungus of the Himalaya',         duration: '',  videoId: 'j4yg4DN0rQw', link: 'https://youtu.be/j4yg4DN0rQw' },
   { id: 'bat-festival',       title: 'Bat Killing Festival in Arunachal Pradesh',                                   duration: '',  videoId: 'hny_k0En9cU', link: 'https://youtu.be/hny_k0En9cU' },
   { id: 'song-cranes',        title: 'Song of the Cranes: Kurja Come Home',                                        duration: '',  videoId: 'L_Z6Gg4Qu94', link: 'https://youtu.be/L_Z6Gg4Qu94' },
-  { id: 'fish-festival',      title: 'Fish Killing Festival of the Himalaya: Maund Mela',                          duration: '',  videoId: '9UtCh4Sxc3I', link: 'https://youtu.be/9UtCh4Sxc3I' },
+  { id: 'fish-festival',      title: 'Fish Killing Festival of the Himalaya: Maund Mela',                          duration: '',  videoId: '9UtCh4Sxc3I', link: 'https://youtu.be/9UtCh4Sxc3I', customThumb: '/fish-festival-thumb.png' },
   { id: 'olive-ridley',       title: 'A Miracle on the Shore: Olive Ridley Hatchlings Rush to the Sea',            duration: '',  videoId: 'MRtGShgWYKw', link: 'https://youtu.be/MRtGShgWYKw' },
 ]
 
@@ -57,7 +58,7 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
       onMouseLeave={() => setHovered(false)}
       className="wfi-gallery-card"
       style={{
-        width: 320,
+        width: 'clamp(240px, 72vw, 320px)',
         flexShrink: 0,
         borderRadius: '3px',
         overflow: 'hidden',
@@ -75,10 +76,10 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
       }}
     >
       {/* ── Image zone ── */}
-      <div className="wfi-gallery-img" style={{ position: 'relative', height: 230, overflow: 'hidden' }}>
-        {/* YouTube thumbnail with hqdefault fallback */}
+      <div className="wfi-gallery-img" style={{ position: 'relative', height: 'clamp(160px, 45vw, 230px)', overflow: 'hidden' }}>
+        {/* Thumbnail — custom image takes priority over YouTube auto-thumb */}
         <img
-          src={thumbUrl(card.videoId)}
+          src={card.customThumb ?? thumbUrl(card.videoId)}
           alt={card.title}
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = thumbFallback(card.videoId) }}
           style={{
@@ -88,18 +89,18 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
             height: '110%',
             objectFit: 'cover',
             objectPosition: 'center',
-            filter: 'brightness(0.45) saturate(0.6)',
+            filter: 'brightness(0.82) saturate(0.85)',
             transition: 'filter 0.4s',
             willChange: 'transform',
           }}
         />
 
-        {/* Gradient overlay */}
+        {/* Gradient overlay — light fade only at very bottom for text legibility */}
         <div
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to bottom, transparent 25%, rgba(3,3,3,0.78) 100%)',
+            background: 'linear-gradient(to bottom, transparent 60%, rgba(3,3,3,0.55) 100%)',
           }}
         />
 
@@ -173,7 +174,7 @@ function GalleryCard({ card, index }: { card: GalleryCard; index: number }) {
         <h3
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '1.38rem',
+            fontSize: 'clamp(1.1rem, 3.5vw, 1.38rem)',
             fontWeight: 300,
             color: '#F0EDE8',
             lineHeight: 1.15,
@@ -285,9 +286,9 @@ export default function WildlifeSection() {
         <div
           style={{
             display: 'flex',
-            gap: 20,
-            paddingLeft: 'clamp(1.5rem, 5vw, 6rem)',
-            paddingRight: 'clamp(1.5rem, 5vw, 6rem)',
+            gap: 'clamp(12px, 3vw, 20px)',
+            paddingLeft: 'clamp(1rem, 5vw, 6rem)',
+            paddingRight: 'clamp(1rem, 5vw, 6rem)',
             paddingBottom: '1rem',
             userSelect: 'none',
             WebkitUserSelect: 'none',
@@ -301,7 +302,7 @@ export default function WildlifeSection() {
 
       {/* ── View more ── */}
       <motion.div
-        className="flex justify-center mt-12"
+        className="flex justify-center mt-8 md:mt-12"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}

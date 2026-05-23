@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 
@@ -27,6 +27,20 @@ function FloatingParticle({ delay, duration, left, size, color, riseY, driftX }:
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    // React doesn't reliably set the muted attribute on video elements — set it directly
+    v.muted = true
+    v.play().catch(() => {
+      // Autoplay blocked (e.g. low-power mode) — try again on first user interaction
+      const resume = () => { v.play().catch(() => {}); document.removeEventListener('touchstart', resume) }
+      document.addEventListener('touchstart', resume, { once: true })
+    })
+  }, [])
+
   const [particles] = useState(() =>
     Array.from({ length: 20 }, (_, i) => ({
       id: i,
@@ -50,10 +64,13 @@ export default function HeroSection() {
       {/* ── Background video ── */}
       <div className="absolute inset-0 overflow-hidden">
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
+          disablePictureInPicture
+          disableRemotePlayback
           style={{
             position: 'absolute',
             top: 0,
@@ -63,6 +80,7 @@ export default function HeroSection() {
             objectFit: 'cover',
             objectPosition: 'center center',
             filter: 'brightness(0.68) saturate(0.75)',
+            pointerEvents: 'none',
           }}
         >
           <source src="/hero-bg.mov" type="video/mp4" />

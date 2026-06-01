@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-
+import Link from 'next/link'
 import { motion, useInView } from 'framer-motion'
 import Navigation from '@/components/layout/Navigation'
 import Footer from '@/components/layout/Footer'
@@ -190,6 +190,7 @@ function ServicesSection() {
 
 function ServiceCard({ svc, index, inView }: { svc: typeof SERVICES[0]; index: number; inView: boolean }) {
   const [hovered, setHovered] = useState(false)
+  const isEquipmentSales = svc.title === 'Used & New Equipment Sales'
 
   return (
     <motion.div
@@ -208,6 +209,8 @@ function ServiceCard({ svc, index, inView }: { svc: typeof SERVICES[0]; index: n
         transition: 'border-color 0.3s, box-shadow 0.3s',
         boxShadow: hovered ? '0 0 32px rgba(201,168,76,0.06)' : 'none',
         backdropFilter: 'blur(8px)',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <p style={{
@@ -227,9 +230,47 @@ function ServiceCard({ svc, index, inView }: { svc: typeof SERVICES[0]; index: n
         fontWeight: 300,
         color: 'rgba(240,237,232,0.72)',
         lineHeight: 1.85,
+        flex: 1,
       }}>
         {svc.body}
       </p>
+      {isEquipmentSales && (
+        <Link
+          href="/equipment"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            marginTop: '20px',
+            fontFamily: '"Space Mono", monospace',
+            fontSize: '0.55rem',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: '#C9A84C',
+            textDecoration: 'none',
+            border: '1px solid rgba(201,168,76,0.35)',
+            borderRadius: '2px',
+            padding: '0.55rem 1rem',
+            transition: 'background 0.2s, color 0.2s, border-color 0.2s',
+            alignSelf: 'flex-start',
+          }}
+          onMouseEnter={e => {
+            const el = e.currentTarget as HTMLElement
+            el.style.background = 'rgba(201,168,76,0.12)'
+            el.style.borderColor = 'rgba(201,168,76,0.6)'
+          }}
+          onMouseLeave={e => {
+            const el = e.currentTarget as HTMLElement
+            el.style.background = 'transparent'
+            el.style.borderColor = 'rgba(201,168,76,0.35)'
+          }}
+        >
+          View Equipment
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </Link>
+      )}
     </motion.div>
   )
 }

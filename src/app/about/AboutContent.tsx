@@ -403,11 +403,20 @@ function MDSection() {
 // ────────────────────────────────────────────────────────────────
 // 5c — PEOPLE ROSTER
 // ────────────────────────────────────────────────────────────────
-const PEOPLE = [
-  'John Robert', 'Randhir Singh', 'Amit Patnaik',
-  'Prashant Samal', 'Pravat Samal', 'Sashikanta Samal', 'Anirudha Samal',
-  'Dharin Leisan', 'Vikash Kumar', 'Sanya Saha', 'Amrit Srivastava',
-  'Bagini Dang', 'Vibha Dang', 'Dharanshi Dang',
+const PEOPLE: { name: string; photo?: string }[] = [
+  { name: 'Randhir Singh', photo: '/randhir-singh.jpg' },
+  { name: 'Amit Patnaik',      photo: '/amit-patnaik.jpg' },
+  { name: 'Prashant Samal',    photo: '/prashant-samal.jpg' },
+  { name: 'Pravat Samal',      photo: '/pravat-samal.jpg' },
+  { name: 'Sashikanta Samal',  photo: '/sashikanta-samal.jpg' },
+  { name: 'Anirudha Samal',    photo: '/anirudha-samal.jpg' },
+  { name: 'Dharin Leisan',     photo: '/dharin-leisan.jpg' },
+  { name: 'Vikash Kumar',      photo: '/vikash-kumar.jpg' },
+  { name: 'Sanya Saha',        photo: '/sanya-saha.jpg' },
+  { name: 'Amrit Srivastava', photo: '/amrit-srivastava.jpg' },
+  { name: 'Bagini Dang', photo: '/bagini-dang.jpg' },
+  { name: 'Vibha Dang',        photo: '/vibha-dang.jpg' },
+  { name: 'Dharanshi Dang',    photo: '/dharanshi-dang.jpg' },
 ]
 
 function PeopleSection() {
@@ -430,30 +439,85 @@ function PeopleSection() {
           </h2>
         </Fade>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 220px), 1fr))',
-          borderTop: BORDER, borderLeft: BORDER,
-        }}>
-          {PEOPLE.map((name, i) => (
-            <Fade key={name} delay={i * 0.035}>
+        {(() => {
+          const withPhoto = [
+            { name: 'John Robert', photo: '/john-robert.jpg', photoStyle: undefined },
+            ...PEOPLE.filter(p => p.photo).map(p => ({ ...p, photoStyle: undefined })),
+            ...DOGS.map(d => ({ name: d.name, photo: d.photo, photoStyle: d.photoStyle })),
+          ]
+          const withoutPhoto = PEOPLE.filter(p => !p.photo)
+          let nameIdx = withPhoto.length
+
+          return (
+            <>
+              {/* Photo grid */}
               <div style={{
-                borderBottom: BORDER, borderRight: BORDER,
-                padding: 'clamp(1rem,2.5vw,1.4rem) clamp(1rem,2vw,1.5rem)',
-                display: 'flex', alignItems: 'center', gap: '0.75rem',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(6, 120px)',
+                justifyContent: 'center',
+                gap: '6px',
+                marginBottom: '24px',
               }}>
-                <span style={{ fontFamily: MONO, fontSize: '0.38rem', color: GOLD35,
-                  letterSpacing: '0.1em', flexShrink: 0 }}>
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <p style={{ fontFamily: SERIF, fontSize: '1.05rem', fontWeight: 300,
-                  color: 'rgba(240,237,232,0.75)', letterSpacing: '0.01em', lineHeight: 1 }}>
-                  {name}
-                </p>
+                {withPhoto.map(person => (
+                  <div key={person.name} style={{
+                    border: BORDER,
+                    borderRadius: '2px',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}>
+                    <div style={{ aspectRatio: '3/4', position: 'relative', overflow: 'hidden' }}>
+                      <img
+                        src={person.photo}
+                        alt={person.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', ...person.photoStyle }}
+                      />
+                    </div>
+                    <p style={{
+                      fontFamily: SERIF,
+                      fontSize: '0.82rem',
+                      fontWeight: 300,
+                      color: 'rgba(240,237,232,0.75)',
+                      textAlign: 'center',
+                      padding: '0.5rem 0.5rem 0.6rem',
+                      lineHeight: 1.2,
+                    }}>
+                      {person.name}
+                    </p>
+                  </div>
+                ))}
               </div>
-            </Fade>
-          ))}
-        </div>
+
+              {/* Name-only list */}
+              {withoutPhoto.length > 0 && (
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 220px), 1fr))',
+                  borderTop: BORDER, borderLeft: BORDER,
+                }}>
+                  {withoutPhoto.map(person => (
+                    <Fade key={person.name} delay={0.05}>
+                      <div style={{
+                        borderBottom: BORDER, borderRight: BORDER,
+                        padding: 'clamp(1rem,2.5vw,1.4rem) clamp(1rem,2vw,1.5rem)',
+                        display: 'flex', alignItems: 'center', gap: '0.75rem',
+                      }}>
+                        <span style={{ fontFamily: MONO, fontSize: '0.38rem', color: GOLD35,
+                          letterSpacing: '0.1em', flexShrink: 0 }}>
+                          {String(++nameIdx).padStart(2, '0')}
+                        </span>
+                        <p style={{ fontFamily: SERIF, fontSize: '1.05rem', fontWeight: 300,
+                          color: 'rgba(240,237,232,0.75)', letterSpacing: '0.01em', lineHeight: 1 }}>
+                          {person.name}
+                        </p>
+                      </div>
+                    </Fade>
+                  ))}
+                </div>
+              )}
+            </>
+          )
+        })()}
 
       </div>
     </section>
@@ -461,114 +525,12 @@ function PeopleSection() {
 }
 
 // ────────────────────────────────────────────────────────────────
-// 5d — RESIDENT WILDLIFE
-// ────────────────────────────────────────────────────────────────
-const CINZEL = '"Cinzel", "Trajan Pro", serif'
-
 const DOGS = [
-  { name: 'Niffler',  title: 'CHIEF CHAOS\nCOORDINATOR' },
-  { name: 'Griffin',  title: 'HEAD OF OFFICE\nSECURITY' },
-  { name: 'Raven',    title: 'DIRECTOR OF FIRST\nIMPRESSIONS' },
-  { name: 'Baghera',  title: 'CHIEF MOOD\nOFFICER' },
+  { name: 'Niffler',  title: 'CHIEF CHAOS\nCOORDINATOR',       photo: '/niffler.jpg' },
+  { name: 'Griffin',  title: 'HEAD OF OFFICE\nSECURITY',        photo: '/griffin.jpg', photoStyle: { objectFit: 'contain' as const } },
+  { name: 'Raven',    title: 'DIRECTOR OF FIRST\nIMPRESSIONS',  photo: '/raven.jpg' },
+  { name: 'Baghera',  title: 'CHIEF MOOD\nOFFICER',             photo: '/baghera.jpg' },
 ]
-
-function PawIcon() {
-  return (
-    <svg
-      width="22" height="22" viewBox="0 0 44 44" fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ display: 'block', margin: '0 auto', opacity: 0.55 }}
-      aria-hidden="true"
-    >
-      {/* Palm pad */}
-      <ellipse cx="22" cy="28" rx="10" ry="8.5" fill="#9a7c3f" />
-      {/* Toes */}
-      <ellipse cx="10" cy="18" rx="4.5" ry="5.5" fill="#9a7c3f" />
-      <ellipse cx="17" cy="13" rx="4" ry="5"   fill="#9a7c3f" />
-      <ellipse cx="27" cy="13" rx="4" ry="5"   fill="#9a7c3f" />
-      <ellipse cx="34" cy="18" rx="4.5" ry="5.5" fill="#9a7c3f" />
-    </svg>
-  )
-}
-
-function DogCard({ dog, index }: { dog: typeof DOGS[0]; index: number }) {
-  const [hovered, setHovered] = useState(false)
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-30px' }}
-      transition={{ duration: 0.75, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: '#0f0e0c',
-        border: `0.5px solid ${hovered ? '#7a5e28' : '#2e2a1e'}`,
-        padding: '20px 16px 18px',
-        textAlign: 'center',
-        transition: 'border-color 0.3s ease',
-      }}
-    >
-      <div style={{ marginBottom: '12px' }}>
-        <PawIcon />
-      </div>
-      <p style={{
-        fontFamily: SERIF,
-        fontSize: '20px',
-        fontWeight: 300,
-        fontStyle: 'italic',
-        color: '#b89a52',
-        letterSpacing: '0.02em',
-        lineHeight: 1,
-        marginBottom: '10px',
-      }}>
-        {dog.name}
-      </p>
-      <p style={{
-        fontFamily: CINZEL,
-        fontSize: '9px',
-        letterSpacing: '0.18em',
-        textTransform: 'uppercase',
-        color: '#4a3f22',
-        lineHeight: 1.65,
-        whiteSpace: 'pre-line',
-      }}>
-        {dog.title}
-      </p>
-    </motion.div>
-  )
-}
-
-function ResidentWildlifeSection() {
-  return (
-    <section style={{ background: BG, borderBottom: BORDER }}>
-      <div style={{
-        maxWidth: '1200px', margin: '0 auto',
-        padding: 'clamp(2rem,4vw,3rem) clamp(1.5rem,6vw,4rem)',
-      }}>
-        <Fade>
-          <p style={{
-            fontFamily: CINZEL,
-            fontSize: '10px',
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: GOLD,
-            marginBottom: '1.5rem',
-          }}>
-            Resident Wildlife
-          </p>
-        </Fade>
-
-        {/* 4-column card grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: '14px' }}>
-          {DOGS.map((dog, i) => (
-            <DogCard key={dog.name} dog={dog} index={i} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
 
 
 // ────────────────────────────────────────────────────────────────
@@ -719,7 +681,6 @@ export default function AboutContent() {
       <ValuesSection />
       <MDSection />
       <PeopleSection />
-      <ResidentWildlifeSection />
       <CTASection />
       <ConservationSection />
     </main>

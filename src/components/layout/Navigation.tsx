@@ -11,6 +11,7 @@ const NAV_LINKS: { label: string; href: string }[] = [
   { label: 'India',      href: '#journey-across-india' },
   { label: 'About Us',   href: '/about'                },
   { label: 'Offerings',  href: '/offerings'            },
+  { label: 'Equipment',  href: '/equipment'            },
   { label: 'Contact Us', href: '#contact'              },
 ]
 

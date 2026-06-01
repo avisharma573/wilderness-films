@@ -403,20 +403,11 @@ function MDSection() {
 // ────────────────────────────────────────────────────────────────
 // 5c — PEOPLE ROSTER
 // ────────────────────────────────────────────────────────────────
-const PEOPLE: { name: string; photo?: string }[] = [
-  { name: 'Randhir Singh' },
-  { name: 'Amit Patnaik', photo: '/amit-patnaik.jpg' },
-  { name: 'Prashant Samal', photo: '/prashant-samal.jpg' },
-  { name: 'Pravat Samal', photo: '/pravat-samal.jpg' },
-  { name: 'Sashikanta Samal', photo: '/sashikanta-samal.jpg' },
-  { name: 'Anirudha Samal', photo: '/anirudha-samal.jpg' },
-  { name: 'Dharin Leisan', photo: '/dharin-leisan.jpg' },
-  { name: 'Vikash Kumar', photo: '/vikash-kumar.jpg' },
-  { name: 'Sanya Saha' },
-  { name: 'Amrit Srivastava' },
-  { name: 'Bagini Dang' },
-  { name: 'Vibha Dang', photo: '/vibha-dang.jpg' },
-  { name: 'Dharanshi Dang', photo: '/dharanshi-dang.jpg' },
+const PEOPLE = [
+  'John Robert', 'Randhir Singh', 'Amit Patnaik',
+  'Prashant Samal', 'Pravat Samal', 'Sashikanta Samal', 'Anirudha Samal',
+  'Dharin Leisan', 'Vikash Kumar', 'Sanya Saha', 'Amrit Srivastava',
+  'Bagini Dang', 'Vibha Dang', 'Dharanshi Dang',
 ]
 
 function PeopleSection() {
@@ -439,73 +430,30 @@ function PeopleSection() {
           </h2>
         </Fade>
 
-        {/* Photo cards grid — John Robert + all people with photos */}
-        {(() => {
-          const withPhoto = [{ name: 'John Robert', photo: '/john-robert.jpg' }, ...PEOPLE.filter(p => p.photo)]
-          const withoutPhoto = PEOPLE.filter(p => !p.photo)
-          let nameIdx = withPhoto.length
-
-          return (
-            <>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 220px), 1fr))',
+          borderTop: BORDER, borderLeft: BORDER,
+        }}>
+          {PEOPLE.map((name, i) => (
+            <Fade key={name} delay={i * 0.035}>
               <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(6, 120px)',
-                justifyContent: 'center',
-                gap: '6px',
-                marginBottom: '6px',
+                borderBottom: BORDER, borderRight: BORDER,
+                padding: 'clamp(1rem,2.5vw,1.4rem) clamp(1rem,2vw,1.5rem)',
+                display: 'flex', alignItems: 'center', gap: '0.75rem',
               }}>
-                {withPhoto.map((person, i) => (
-                  <Fade key={person.name} delay={i * 0.05}>
-                    <div style={{
-                      display: 'flex', flexDirection: 'column',
-                      overflow: 'hidden',
-                      background: 'rgba(201,168,76,0.02)',
-                      border: BORDER,
-                      borderRadius: '2px',
-                    }}>
-                      <div style={{ width: '100%', aspectRatio: '3/4', overflow: 'hidden' }}>
-                        <img
-                          src={person.photo}
-                          alt={person.name}
-                          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block', filter: 'brightness(0.92) saturate(0.85)' }}
-                        />
-                      </div>
-                      <div style={{ padding: '0.5rem 0.5rem 0.6rem', borderTop: BORDER, textAlign: 'center' }}>
-                        <p style={{ fontFamily: SERIF, fontSize: '0.82rem', fontWeight: 300, color: TEXT, letterSpacing: '0.01em', lineHeight: 1.2 }}>
-                          {person.name}
-                        </p>
-                      </div>
-                    </div>
-                  </Fade>
-                ))}
+                <span style={{ fontFamily: MONO, fontSize: '0.38rem', color: GOLD35,
+                  letterSpacing: '0.1em', flexShrink: 0 }}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <p style={{ fontFamily: SERIF, fontSize: '1.05rem', fontWeight: 300,
+                  color: 'rgba(240,237,232,0.75)', letterSpacing: '0.01em', lineHeight: 1 }}>
+                  {name}
+                </p>
               </div>
-
-              {/* Name-only list */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 220px), 1fr))',
-                borderTop: BORDER, borderLeft: BORDER,
-              }}>
-                {withoutPhoto.map((person, i) => (
-                  <Fade key={person.name} delay={i * 0.035}>
-                    <div style={{
-                      borderBottom: BORDER, borderRight: BORDER,
-                      padding: 'clamp(1rem,2.5vw,1.4rem) clamp(1rem,2vw,1.5rem)',
-                      display: 'flex', alignItems: 'center', gap: '0.75rem',
-                    }}>
-                      <span style={{ fontFamily: MONO, fontSize: '0.38rem', color: GOLD35, letterSpacing: '0.1em', flexShrink: 0 }}>
-                        {String(++nameIdx).padStart(2, '0')}
-                      </span>
-                      <p style={{ fontFamily: SERIF, fontSize: '1.05rem', fontWeight: 300, color: 'rgba(240,237,232,0.75)', letterSpacing: '0.01em', lineHeight: 1 }}>
-                        {person.name}
-                      </p>
-                    </div>
-                  </Fade>
-                ))}
-              </div>
-            </>
-          )
-        })()}
+            </Fade>
+          ))}
+        </div>
 
       </div>
     </section>

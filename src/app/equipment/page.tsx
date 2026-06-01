@@ -160,7 +160,8 @@ export default function EquipmentPage() {
         .dd-scroll::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         @media (max-width: 860px) {
           .eq-table th:nth-child(2), .eq-table td:nth-child(2),
-          .eq-table th:nth-child(4), .eq-table td:nth-child(4) { display: none; }
+          .eq-table th:nth-child(3), .eq-table td:nth-child(3) { display: none; }
+          .eq-cond-mobile { display: inline-block !important; }
         }
         @media (max-width: 560px) {
           .eq-hero { flex-direction: column !important; }
@@ -382,6 +383,20 @@ export default function EquipmentPage() {
                         >
                           {item.name}
                         </div>
+                        <span className="eq-cond-mobile" style={{
+                          display: 'none',
+                          fontSize: '0.52rem', fontWeight: 600,
+                          letterSpacing: '0.1em', textTransform: 'uppercase',
+                          padding: '0.18rem 0.5rem', borderRadius: '20px',
+                          marginTop: '0.35rem',
+                          ...(sold
+                            ? { background: 'rgba(255,255,255,0.06)', color: '#555', border: '1px solid #333' }
+                            : item.cond === 'New'
+                            ? { background: 'rgba(78,158,58,0.13)', color: '#4e9e3a' }
+                            : { background: 'rgba(200,168,75,0.09)', color: '#c8a84b' }),
+                        }}>
+                          {sold ? 'Sold' : item.cond}
+                        </span>
                       </td>
                       <td style={{ padding: '0.9rem 1rem', verticalAlign: 'middle' }}>
                         <span style={{

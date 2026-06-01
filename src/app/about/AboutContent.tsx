@@ -451,10 +451,7 @@ function PeopleSection() {
           return (
             <>
               {/* Photo grid */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(6, 120px)',
-                justifyContent: 'center',
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6" style={{
                 gap: '6px',
                 marginBottom: '24px',
               }}>

@@ -427,9 +427,12 @@ export default function EquipmentPage() {
                             opacity: 0.3, cursor: 'not-allowed',
                           }}>Sold</span>
                         ) : (
-                          <a
+                          <button
                             className="enquire-btn"
-                            href={`mailto:rupindang@gmail.com?cc=dharanshidang@gmail.com&subject=Enquiry: ${encodeURIComponent(item.name)}&body=Hi,%0D%0A%0D%0AI am interested in the following item:%0D%0A${encodeURIComponent(item.name)}%0D%0A%0D%0APlease share more details.%0D%0A%0D%0ARegards`}
+                            onClick={() => {
+                              const url = `https://mail.google.com/mail/?view=cm&fs=1&to=rupindang@gmail.com&cc=dharanshidang@gmail.com&su=${encodeURIComponent('Enquiry: ' + item.name)}&body=${encodeURIComponent('Hi,\n\nI am interested in the following item:\n' + item.name + '\n\nPlease share more details.\n\nRegards')}`
+                              window.open(url, '_blank', 'noopener,noreferrer')
+                            }}
                             style={{
                               display: 'inline-block', fontSize: '0.6rem', fontWeight: 600,
                               letterSpacing: '0.14em', textTransform: 'uppercase',
@@ -437,11 +440,11 @@ export default function EquipmentPage() {
                               border: '1px solid #8a6f2e', borderRadius: '5px',
                               padding: '0.38rem 0.9rem',
                               transition: 'background 0.18s, color 0.18s, border-color 0.18s',
-                              whiteSpace: 'nowrap',
+                              whiteSpace: 'nowrap', cursor: 'pointer', background: 'transparent',
                             }}
                           >
                             Enquire
-                          </a>
+                          </button>
                         )}
                       </td>
                     </tr>

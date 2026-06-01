@@ -405,11 +405,11 @@ function MDSection() {
 // ────────────────────────────────────────────────────────────────
 const PEOPLE: { name: string; photo?: string }[] = [
   { name: 'Randhir Singh', photo: '/randhir-singh.jpg' },
-  { name: 'Amit Patnaik',      photo: '/amit-patnaik.jpg' },
+  { name: 'Anirudha Samal',    photo: '/anirudha-samal.jpg' },
   { name: 'Prashant Samal',    photo: '/prashant-samal.jpg' },
   { name: 'Pravat Samal',      photo: '/pravat-samal.jpg' },
   { name: 'Sashikanta Samal',  photo: '/sashikanta-samal.jpg' },
-  { name: 'Anirudha Samal',    photo: '/anirudha-samal.jpg' },
+  { name: 'Amit Patnaik',      photo: '/amit-patnaik.jpg' },
   { name: 'Dharin Leisan',     photo: '/dharin-leisan.jpg' },
   { name: 'Vikash Kumar',      photo: '/vikash-kumar.jpg' },
   { name: 'Sanya Saha',        photo: '/sanya-saha.jpg' },

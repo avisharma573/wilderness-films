@@ -441,9 +441,9 @@ function PeopleSection() {
 
         {(() => {
           const withPhoto = [
-            { name: 'John Robert', photo: '/john-robert.jpg', photoStyle: undefined },
-            ...PEOPLE.filter(p => p.photo).map(p => ({ ...p, photoStyle: undefined })),
-            ...DOGS.map(d => ({ name: d.name, photo: d.photo, photoStyle: d.photoStyle })),
+            { name: 'John Robert', photo: '/john-robert.jpg' },
+            ...PEOPLE.filter(p => p.photo).map(p => ({ name: p.name, photo: p.photo })),
+            ...DOGS.map(d => ({ name: d.name, photo: d.photo })),
           ]
           const withoutPhoto = PEOPLE.filter(p => !p.photo)
           let nameIdx = withPhoto.length
@@ -451,7 +451,10 @@ function PeopleSection() {
           return (
             <>
               {/* Photo grid */}
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6" style={{
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                justifyContent: 'center',
                 gap: '6px',
                 marginBottom: '24px',
               }}>
@@ -467,7 +470,7 @@ function PeopleSection() {
                       <img
                         src={person.photo}
                         alt={person.name}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', ...person.photoStyle }}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                       />
                     </div>
                     <p style={{
@@ -524,7 +527,7 @@ function PeopleSection() {
 // ────────────────────────────────────────────────────────────────
 const DOGS = [
   { name: 'Niffler',  title: 'CHIEF CHAOS\nCOORDINATOR',       photo: '/niffler.jpg' },
-  { name: 'Griffin',  title: 'HEAD OF OFFICE\nSECURITY',        photo: '/griffin.jpg', photoStyle: { objectFit: 'contain' as const } },
+  { name: 'Griffin',  title: 'HEAD OF OFFICE\nSECURITY',        photo: '/griffin.jpg' },
   { name: 'Raven',    title: 'DIRECTOR OF FIRST\nIMPRESSIONS',  photo: '/raven.jpg' },
   { name: 'Baghera',  title: 'CHIEF MOOD\nOFFICER',             photo: '/baghera.jpg' },
 ]

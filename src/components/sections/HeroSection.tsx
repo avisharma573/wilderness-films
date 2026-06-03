@@ -83,8 +83,7 @@ export default function HeroSection() {
             pointerEvents: 'none',
           }}
         >
-          <source src="/hero-bg.mov" type="video/mp4" />
-          <source src="/hero-bg.mov" type="video/quicktime" />
+          <source src="/hero-bg.mp4" type="video/mp4" />
         </video>
       </div>
 
